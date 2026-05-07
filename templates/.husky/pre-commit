@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# Wire the compliance-citation check into your project's pre-commit.
+# Replace MCP_PATH with the absolute path to the mcp-security-compliance
+# checkout, then `chmod +x .husky/pre-commit`.
+
+bun run /MCP_PATH/scripts/check-compliance-citations.ts

@@ -1,26 +1,3 @@
-// ISO 27001 types
-export interface IsoControl {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  theme: string;
-  guidance: string;
-  evidence_examples: string[];
-}
-
-export interface IsoCategory {
-  id: string;
-  name: string;
-  controls: IsoControl[];
-}
-
-export interface IsoData {
-  standard: string;
-  version: string;
-  categories: IsoCategory[];
-}
-
 // NIST 800-53 types
 export interface NistControl {
   id: string;

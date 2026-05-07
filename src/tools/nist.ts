@@ -1,4 +1,5 @@
 import type { NistData, NistControl } from "../types.js";
+import { paginate } from "./_shared.js";
 
 let data: NistData | null = null;
 
@@ -60,17 +61,16 @@ export async function lookupNistControl(
   return detail ? detailed(control) : summarize(control);
 }
 
-export async function searchNistControls(query: string): Promise<object[]> {
+export async function searchNistControls(query: string, limit: number = 20) {
   const d = await load();
   const q = query.toLowerCase();
-  return allControlsWithEnhancements(d)
-    .filter(
-      (c) =>
-        c.title.toLowerCase().includes(q) ||
-        c.statement.toLowerCase().includes(q) ||
-        c.guidance.toLowerCase().includes(q)
-    )
-    .map(summarize);
+  const matches = allControlsWithEnhancements(d).filter(
+    (c) =>
+      c.title.toLowerCase().includes(q) ||
+      c.statement.toLowerCase().includes(q) ||
+      c.guidance.toLowerCase().includes(q)
+  );
+  return paginate(matches, limit, summarize);
 }
 
 export async function listNistFamily(

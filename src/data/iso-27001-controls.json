@@ -420,7 +420,7 @@
         },
         {
           "id": "A.5.34",
-          "title": "Privacy and protection of personal identifiable information",
+          "title": "Privacy and protection of PII",
           "nist": [
             "PL-2",
             "PM-18",

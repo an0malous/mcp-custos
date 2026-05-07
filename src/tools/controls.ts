@@ -1,5 +1,5 @@
-import type { NistControl } from "../types.js";
 import { lookupNistControl } from "./nist.js";
+import { paginate } from "./_shared.js";
 
 interface IsoControl {
   id: string;
@@ -53,12 +53,15 @@ export async function lookupControl(controlId: string, detailed: boolean = false
   };
 }
 
-export async function searchControls(query: string) {
+export async function searchControls(query: string, limit: number = 20) {
   const d = await load();
   const q = query.toLowerCase();
-  return allControls(d)
-    .filter((c) => c.title.toLowerCase().includes(q))
-    .map((c) => ({ id: c.id, title: c.title, nist_mappings: c.nist }));
+  const matches = allControls(d).filter((c) => c.title.toLowerCase().includes(q));
+  return paginate(matches, limit, (c) => ({
+    id: c.id,
+    title: c.title,
+    nist_mappings: c.nist,
+  }));
 }
 
 export async function listByCategory(categoryId: string) {

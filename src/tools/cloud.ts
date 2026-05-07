@@ -1,4 +1,5 @@
 import { resolveNistCloudRefs } from "./nist-cloud.js";
+import { paginate } from "./_shared.js";
 
 interface CloudControl {
   id: string;
@@ -56,7 +57,7 @@ export async function lookupCloudControl(controlId: string) {
   };
 }
 
-export async function searchCloudControls(query: string) {
+export async function searchCloudControls(query: string, limit: number = 20) {
   const d = await load();
   const q = query.toLowerCase();
 
@@ -65,15 +66,18 @@ export async function searchCloudControls(query: string) {
   );
   const guidanceMap = new Map(guidanceData.map((g) => [g.id, g]));
 
-  return allControls(d)
-    .filter((c) => {
-      if (c.title.toLowerCase().includes(q)) return true;
-      return c.nist_refs.some((ref) => {
-        const g = guidanceMap.get(ref);
-        return g && (g.title.toLowerCase().includes(q) || g.guidance.toLowerCase().includes(q));
-      });
-    })
-    .map((c) => ({ id: c.id, title: c.title, nist_refs: c.nist_refs }));
+  const matches = allControls(d).filter((c) => {
+    if (c.title.toLowerCase().includes(q)) return true;
+    return c.nist_refs.some((ref) => {
+      const g = guidanceMap.get(ref);
+      return g && (g.title.toLowerCase().includes(q) || g.guidance.toLowerCase().includes(q));
+    });
+  });
+  return paginate(matches, limit, (c) => ({
+    id: c.id,
+    title: c.title,
+    nist_refs: c.nist_refs,
+  }));
 }
 
 export async function listCloudSection(sectionId: string) {

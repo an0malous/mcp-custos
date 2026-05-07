@@ -1,0 +1,2982 @@
+{
+  "standard": "NIST SP 800-218",
+  "name": "Secure Software Development Framework (SSDF)",
+  "version": "1.1",
+  "oscal_version": "1.0.0",
+  "last_modified": "2025-07-06T22:16:50.000000-00:00",
+  "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
+  "source": "https://raw.githubusercontent.com/usnistgov/oscal-content/main/nist.gov/SP800-218/ver1/json/NIST_SP800-218_ver1_catalog-min.json",
+  "groups": [
+    {
+      "id": "PO",
+      "name": "Prepare the Organization",
+      "description": "",
+      "practices": [
+        {
+          "id": "PO.1",
+          "title": "Define Security Requirements for Software Development",
+          "text": "Ensure that security requirements for software development are known at all times so that they can be taken into account throughout the SDLC and duplication of effort can be minimized because the requirements information can be collected once and shared. This includes requirements from internal sources (e.g., the organization’s policies, business objectives, and risk management strategy) and external sources (e.g., applicable laws and regulations).",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PO.1.1",
+              "text": "Identify and document all security requirements for the organization’s software development infrastructures and processes, and maintain the requirements over time.",
+              "references": {
+                "BSAFSS": [
+                  "SM.3",
+                  "DE.1",
+                  "IA.1",
+                  "IA.2"
+                ],
+                "BSIMM": [
+                  "CP1.1",
+                  "CP1.3",
+                  "SR1.1",
+                  "SR2.2",
+                  "SE1.2",
+                  "SE2.6"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-7",
+                  "SM-9"
+                ],
+                "NISTCSF": [
+                  "ID.GV-3"
+                ],
+                "OWASPASVS": [
+                  "1.1.1"
+                ],
+                "OWASPMASVS": [
+                  "1.10"
+                ],
+                "OWASPSAMM": [
+                  "PC1-A",
+                  "PC1-B",
+                  "PC2-A"
+                ],
+                "PCISSLC": [
+                  "2.1",
+                  "2.2"
+                ],
+                "SCFPSSD": [
+                  "Planning the Implementation and Deployment of Secure Development Practices"
+                ],
+                "SP800160": [
+                  "3.1.2",
+                  "3.2.1",
+                  "3.2.2",
+                  "3.3.1",
+                  "3.4.2",
+                  "3.4.3"
+                ],
+                "SP800161": [
+                  "SA-1",
+                  "SA-8",
+                  "SA-15",
+                  "SR-3"
+                ],
+                "SP800181": [
+                  "T0414",
+                  "K0003",
+                  "K0039",
+                  "K0044",
+                  "K0157",
+                  "K0168",
+                  "K0177",
+                  "K0211",
+                  "K0260",
+                  "K0261",
+                  "K0262",
+                  "K0524",
+                  "S0010",
+                  "S0357",
+                  "S0368",
+                  "A0033",
+                  "A0123",
+                  "A0151"
+                ],
+                "SP80053": [
+                  "SA-1",
+                  "SA-8",
+                  "SA-15",
+                  "SR-3"
+                ]
+              }
+            },
+            {
+              "id": "PO.1.2",
+              "text": "Identify and document all security requirements for organization-developed software to meet, and maintain the requirements over time.",
+              "references": {
+                "BSAFSS": [
+                  "SC.1-1",
+                  "SC.2",
+                  "PD.1-1",
+                  "PD.1-2",
+                  "PD.1-3",
+                  "PD.2-2",
+                  "SI",
+                  "PA",
+                  "CS",
+                  "AA",
+                  "LO",
+                  "EE"
+                ],
+                "BSIMM": [
+                  "SM1.1",
+                  "SM1.4",
+                  "SM2.2",
+                  "CP1.1",
+                  "CP1.2",
+                  "CP1.3",
+                  "CP2.1",
+                  "CP2.3",
+                  "AM1.2",
+                  "SFD1.1",
+                  "SFD2.1",
+                  "SFD3.2",
+                  "SR1.1",
+                  "SR1.3",
+                  "SR2.2",
+                  "SR3.3",
+                  "SR3.4"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SR-3",
+                  "SR-4",
+                  "SR-5",
+                  "SD-4"
+                ],
+                "ISO27034": [
+                  "7.3.2"
+                ],
+                "MSSDL": [
+                  "2",
+                  "5"
+                ],
+                "NISTCSF": [
+                  "ID.GV-3"
+                ],
+                "OWASPMASVS": [
+                  "1.12"
+                ],
+                "OWASPSAMM": [
+                  "PC1-A",
+                  "PC1-B",
+                  "PC2-A",
+                  "PC3-A",
+                  "SR1-A",
+                  "SR1-B",
+                  "SR2-B",
+                  "SA1-B",
+                  "IR1-A"
+                ],
+                "PCISSLC": [
+                  "2.1",
+                  "2.2",
+                  "2.3",
+                  "3.3"
+                ],
+                "SCFPSSD": [
+                  "Establish Coding Standards and Conventions"
+                ],
+                "SP800160": [
+                  "3.1.2",
+                  "3.2.1",
+                  "3.3.1"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SA-15",
+                  "SR-3"
+                ],
+                "SP800181": [
+                  "T0414",
+                  "K0003",
+                  "K0039",
+                  "K0044",
+                  "K0157",
+                  "K0168",
+                  "K0177",
+                  "K0211",
+                  "K0260",
+                  "K0261",
+                  "K0262",
+                  "K0524",
+                  "S0010",
+                  "S0357",
+                  "S0368",
+                  "A0033",
+                  "A0123",
+                  "A0151"
+                ],
+                "SP80053": [
+                  "SA-8",
+                  "SA-8(3)",
+                  "SA-15",
+                  "SR-3"
+                ]
+              }
+            },
+            {
+              "id": "PO.1.3",
+              "text": "Communicate requirements to all third parties who will provide commercial software components to the organization for reuse by the organization’s own software. .Formerly PW.3.1",
+              "references": {
+                "BSAFSS": [
+                  "SM.1",
+                  "SM.2",
+                  "SM.2-1",
+                  "SM.2-4"
+                ],
+                "BSIMM": [
+                  "CP2.4",
+                  "CP3.2",
+                  "SR2.5",
+                  "SR3.2"
+                ],
+                "EO14028": [
+                  "4e(vi)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "19",
+                  "21"
+                ],
+                "IEC62443": [
+                  "SM-9",
+                  "SM-10"
+                ],
+                "MSSDL": [
+                  "7"
+                ],
+                "NISTCSF": [
+                  "ID.SC-3"
+                ],
+                "OWASPSAMM": [
+                  "SR3-A"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 8"
+                ],
+                "SCFPSSD": [
+                  "Manage Security Risk Inherent in the Use of Third-Party Components"
+                ],
+                "SCSIC": [
+                  "Vendor Sourcing Integrity Controls"
+                ],
+                "SP800160": [
+                  "3.1.1",
+                  "3.1.2"
+                ],
+                "SP800161": [
+                  "SA-4",
+                  "SA-9",
+                  "SA-9(1)",
+                  "SA-9(3)",
+                  "SA-10",
+                  "SA-10(1)",
+                  "SA-15",
+                  "SR-3",
+                  "SR-4",
+                  "SR-5"
+                ],
+                "SP800181": [
+                  "T0203",
+                  "T0415",
+                  "K0039",
+                  "S0374",
+                  "A0056",
+                  "A0161"
+                ],
+                "SP80053": [
+                  "SA-4",
+                  "SA-9",
+                  "SA-10",
+                  "SA-10(1)",
+                  "SA-15",
+                  "SR-3",
+                  "SR-4",
+                  "SR-5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PO.2",
+          "title": "Implement Roles and Responsibilities",
+          "text": "Ensure that everyone inside and outside of the organization involved in the SDLC is prepared to perform their SDLC-related roles and responsibilities throughout the SDLC.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PO.2.1",
+              "text": "Create new roles and alter responsibilities for existing roles as needed to encompass all parts of the SDLC. Periodically review and maintain the defined roles and responsibilities, updating them as needed.",
+              "references": {
+                "BSAFSS": [
+                  "PD.2-1",
+                  "PD.2-2"
+                ],
+                "BSIMM": [
+                  "SM1.1",
+                  "SM2.3",
+                  "SM2.7",
+                  "CR1.7"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-2",
+                  "SM-13"
+                ],
+                "NISTCSF": [
+                  "ID.AM-6",
+                  "ID.GV-2"
+                ],
+                "PCISSLC": [
+                  "1.2"
+                ],
+                "SCSIC": [
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800160": [
+                  "3.2.1",
+                  "3.2.4",
+                  "3.3.1"
+                ],
+                "SP800161": [
+                  "SA-3"
+                ],
+                "SP800181": [
+                  "K0233"
+                ],
+                "SP80053": [
+                  "SA-3"
+                ]
+              }
+            },
+            {
+              "id": "PO.2.2",
+              "text": "Provide role-based training for all personnel with responsibilities that contribute to secure development. Periodically review personnel proficiency and role-based training, and update the training as needed.",
+              "references": {
+                "BSAFSS": [
+                  "PD.2-2"
+                ],
+                "BSIMM": [
+                  "T1.1",
+                  "T1.7",
+                  "T1.8",
+                  "T2.5",
+                  "T2.8",
+                  "T2.9",
+                  "T3.1",
+                  "T3.2",
+                  "T3.4"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-4"
+                ],
+                "MSSDL": [
+                  "1"
+                ],
+                "NISTCSF": [
+                  "PR.AT"
+                ],
+                "OWASPSAMM": [
+                  "EG1-A",
+                  "EG2-A"
+                ],
+                "PCISSLC": [
+                  "1.3"
+                ],
+                "SCAGILE": [
+                  "Operational Security Tasks 14",
+                  "15",
+                  "Tasks Requiring the Help of Security Experts 1"
+                ],
+                "SCFPSSD": [
+                  "Planning the Implementation and Deployment of Secure Development Practices"
+                ],
+                "SCSIC": [
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800160": [
+                  "3.2.4",
+                  "3.2.6"
+                ],
+                "SP800161": [
+                  "SA-8"
+                ],
+                "SP800181": [
+                  "OV-TEA-001",
+                  "OV-TEA-002",
+                  "T0030",
+                  "T0073",
+                  "T0320",
+                  "K0204",
+                  "K0208",
+                  "K0220",
+                  "K0226",
+                  "K0243",
+                  "K0245",
+                  "K0252",
+                  "S0100",
+                  "S0101",
+                  "A0004",
+                  "A0057"
+                ],
+                "SP80053": [
+                  "SA-8"
+                ]
+              }
+            },
+            {
+              "id": "PO.2.3",
+              "text": "Obtain upper management or authorizing official commitment to secure development, and convey that commitment to all with development-related roles and responsibilities.",
+              "references": {
+                "BSIMM": [
+                  "SM1.3",
+                  "SM2.7",
+                  "CP2.5"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "NISTCSF": [
+                  "ID.RM-1",
+                  "ID.SC-1"
+                ],
+                "OWASPSAMM": [
+                  "SM1.A"
+                ],
+                "PCISSLC": [
+                  "1.1"
+                ],
+                "SP800181": [
+                  "T0001",
+                  "T0004"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PO.3",
+          "title": "Implement Supporting Toolchains",
+          "text": "Use automation to reduce human effort and improve the accuracy, reproducibility, usability, and comprehensiveness of security practices throughout the SDLC, as well as provide a way to document and demonstrate the use of these practices. Toolchains and tools may be used at different levels of the organization, such as organization-wide or project-specific, and may address a particular part of the SDLC, like a build pipeline.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PO.3.1",
+              "text": "Specify which tools or tool types must or should be included in each toolchain to mitigate identified risks, as well as how the toolchain components are to be integrated with each other.",
+              "references": {
+                "BSIMM": [
+                  "CR1.4",
+                  "ST1.4",
+                  "ST2.5",
+                  "SE2.7"
+                ],
+                "CNCFSSCP": [
+                  "Securing Materials—Verification",
+                  "Securing Build Pipelines—Verification",
+                  "Automation",
+                  "Secure Authentication/Access",
+                  "Securing Artefacts—Verification",
+                  "Securing Deployments—Verification"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(ix)"
+                ],
+                "MSSDL": [
+                  "8"
+                ],
+                "OWASPSAMM": [
+                  "IR2-B",
+                  "ST2-B"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 9"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "K0013",
+                  "K0178"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            },
+            {
+              "id": "PO.3.2",
+              "text": "Follow recommended security practices to deploy, operate, and maintain tools and toolchains.",
+              "references": {
+                "BSAFSS": [
+                  "DE.2"
+                ],
+                "BSIMM": [
+                  "SR1.1",
+                  "SR1.3",
+                  "SR3.4"
+                ],
+                "CNCFSSCP": [
+                  "Securing Build Pipelines—Verification",
+                  "Automation",
+                  "Controlled Environments",
+                  "Secure Authentication/Access",
+                  "Securing Artefacts—Verification",
+                  "Automation",
+                  "Controlled Environments",
+                  "Encryption",
+                  "Securing Deployments—Verification",
+                  "Automation"
+                ],
+                "EO14028": [
+                  "4e(i)(F)",
+                  "4e(ii)",
+                  "4e(iii)",
+                  "4e(v)",
+                  "4e(vi)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-7"
+                ],
+                "IR8397": [
+                  "2.2"
+                ],
+                "OWASPASVS": [
+                  "1.14.3",
+                  "1.14.4",
+                  "14.1",
+                  "14.2"
+                ],
+                "OWASPMASVS": [
+                  "7.9"
+                ],
+                "OWASPSCVS": [
+                  "3",
+                  "5"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 9"
+                ],
+                "SCFPSSD": [
+                  "Use Current Compiler and Toolchain Versions and Secure Compiler Options"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "K0013",
+                  "K0178"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            },
+            {
+              "id": "PO.3.3",
+              "text": "Configure tools to generate artifacts of their support of secure software development practices as defined by the organization.",
+              "references": {
+                "BSAFSS": [
+                  "PD.1-5"
+                ],
+                "BSIMM": [
+                  "SM1.4",
+                  "SM3.4",
+                  "SR1.3"
+                ],
+                "CNCFSSCP": [
+                  "Securing Build Pipelines—Verification",
+                  "Automation",
+                  "Controlled Environments",
+                  "Securing Artefacts—Verification"
+                ],
+                "EO14028": [
+                  "4e(i)(F)",
+                  "4e(ii)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-12",
+                  "SI-2"
+                ],
+                "MSSDL": [
+                  "8"
+                ],
+                "OWASPSAMM": [
+                  "PC3-B"
+                ],
+                "OWASPSCVS": [
+                  "3.13",
+                  "3.14"
+                ],
+                "PCISSLC": [
+                  "2.5"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 9"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "K0013",
+                  "T0024"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PO.4",
+          "title": "Define and Use Criteria for Software Security Checks",
+          "text": "Help ensure that the software resulting from the SDLC meets the organization’s expectations by defining and using criteria for checking the software’s security during development.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PO.4.1",
+              "text": "Define criteria for software security checks and track throughout the SDLC.",
+              "references": {
+                "BSAFSS": [
+                  "TV.2-1",
+                  "TV.5-1"
+                ],
+                "BSIMM": [
+                  "SM1.4",
+                  "SM2.1",
+                  "SM2.2",
+                  "SM2.6",
+                  "SM3.3",
+                  "CP2.2"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SI-2",
+                  "SVV-3"
+                ],
+                "ISO27034": [
+                  "7.3.5"
+                ],
+                "MSSDL": [
+                  "3"
+                ],
+                "OWASPSAMM": [
+                  "PC3-A",
+                  "DR3-B",
+                  "IR3-B",
+                  "ST3-B"
+                ],
+                "PCISSLC": [
+                  "3.3"
+                ],
+                "SP800160": [
+                  "3.2.1",
+                  "3.2.5",
+                  "3.3.1"
+                ],
+                "SP800161": [
+                  "SA-15",
+                  "SA-15(1)"
+                ],
+                "SP800181": [
+                  "K0153",
+                  "K0165"
+                ],
+                "SP80053": [
+                  "SA-15",
+                  "SA-15(1)"
+                ]
+              }
+            },
+            {
+              "id": "PO.4.2",
+              "text": "Implement processes, mechanisms, etc. to gather and safeguard the necessary information in support of the criteria.",
+              "references": {
+                "BSAFSS": [
+                  "PD.1-4",
+                  "PD.1-5"
+                ],
+                "BSIMM": [
+                  "SM1.4",
+                  "SM2.1",
+                  "SM2.2",
+                  "SM3.4"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SVV-1",
+                  "SVV-2",
+                  "SVV-3",
+                  "SVV-4"
+                ],
+                "OWASPSAMM": [
+                  "PC3-B"
+                ],
+                "PCISSLC": [
+                  "2.5"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800160": [
+                  "3.2.5",
+                  "3.3.7"
+                ],
+                "SP800161": [
+                  "SA-15",
+                  "SA-15(1)",
+                  "SA-15(11)"
+                ],
+                "SP800181": [
+                  "T0349",
+                  "K0153"
+                ],
+                "SP80053": [
+                  "SA-15",
+                  "SA-15(1)",
+                  "SA-15(11)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PO.5",
+          "title": "Implement and Maintain Secure Environments for Software Development",
+          "text": "Ensure that all components of the environments for software development are strongly protected from internal and external threats to prevent compromises of the environments or the software being developed or maintained within them. Examples of environments for software development include development, build, test, and distribution environments.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PO.5.1",
+              "text": "Separate and protect each environment involved in software development.",
+              "references": {
+                "BSAFSS": [
+                  "DE.1",
+                  "IA.1",
+                  "IA.2"
+                ],
+                "CNCFSSCP": [
+                  "Securing Build Pipelines—Controlled Environments"
+                ],
+                "EO14028": [
+                  "4e(i)(A)",
+                  "4e(i)(B)",
+                  "4e(i)(C)",
+                  "4e(i)(D)",
+                  "4e(i)(F)",
+                  "4e(ii)",
+                  "4e(iii)",
+                  "4e(v)",
+                  "4e(vi)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-7"
+                ],
+                "NISTCSF": [
+                  "PR.AC-5",
+                  "PR.DS-7"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 11"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-3",
+                  "SA-8",
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "OM-NET-001",
+                  "SP-SYS-001",
+                  "T0019",
+                  "T0023",
+                  "T0144",
+                  "T0160",
+                  "T0262",
+                  "T0438",
+                  "T0484",
+                  "T0485",
+                  "T0553",
+                  "K0001",
+                  "K0005",
+                  "K0007",
+                  "K0033",
+                  "K0049",
+                  "K0056",
+                  "K0061",
+                  "K0071",
+                  "K0104",
+                  "K0112",
+                  "K0179",
+                  "K0326",
+                  "K0487",
+                  "S0007",
+                  "S0084",
+                  "S0121",
+                  "A0048"
+                ],
+                "SP80053": [
+                  "SA-3(1)",
+                  "SA-8",
+                  "SA-15"
+                ]
+              }
+            },
+            {
+              "id": "PO.5.2",
+              "text": "Secure and harden development endpoints (i.e., endpoints for software designers, developers, testers, builders, etc.) to perform development-related tasks using a risk-based approach.",
+              "references": {
+                "BSAFSS": [
+                  "DE.1-1",
+                  "IA.1",
+                  "IA.2"
+                ],
+                "EO14028": [
+                  "4e(i)(C)",
+                  "4e(i)(E)",
+                  "4e(i)(F)",
+                  "4e(ii)",
+                  "4e(iii)",
+                  "4e(v)",
+                  "4e(vi)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-7"
+                ],
+                "NISTCSF": [
+                  "PR.AC-4",
+                  "PR.AC-7",
+                  "PR.IP-1",
+                  "PR.IP-3",
+                  "PR.IP-12",
+                  "PR.PT-1",
+                  "PR.PT-3",
+                  "DE.CM"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 11"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "OM-ADM-001",
+                  "SP-SYS-001",
+                  "T0484",
+                  "T0485",
+                  "T0489",
+                  "T0553",
+                  "K0005",
+                  "K0007",
+                  "K0077",
+                  "K0088",
+                  "K0130",
+                  "K0167",
+                  "K0205",
+                  "K0275",
+                  "S0076",
+                  "S0097",
+                  "S0121",
+                  "S0158",
+                  "A0155"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PS",
+      "name": "Protect the Software",
+      "description": "",
+      "practices": [
+        {
+          "id": "PS.1",
+          "title": "Protect All Forms of Code from Unauthorized Access and Tampering",
+          "text": "Help prevent unauthorized changes to code, both inadvertent and intentional, which could circumvent or negate the intended security characteristics of the software. For code that is not intended to be publicly accessible, this helps prevent theft of the software and may make it more difficult or time-consuming for attackers to find vulnerabilities in the software.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PS.1.1",
+              "text": "Store all forms of code – including source code, executable code, and configuration-as-code – based on the principle of least privilege so that only authorized personnel, tools, services, etc. have access.",
+              "references": {
+                "BSAFSS": [
+                  "IA.1",
+                  "IA.2",
+                  "SM.4-1",
+                  "DE.1-2"
+                ],
+                "BSIMM": [
+                  "SE2.4"
+                ],
+                "CNCFSSCP": [
+                  "Securing the Source Code—Verification",
+                  "Automation",
+                  "Controlled Environments",
+                  "Secure Authentication",
+                  "Securing Materials—Automation"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "Fact Sheet 25"
+                ],
+                "IEC62443": [
+                  "SM-6",
+                  "SM-7",
+                  "SM-8"
+                ],
+                "NISTCSF": [
+                  "PR.AC-4",
+                  "PR.DS-6",
+                  "PR.IP-3"
+                ],
+                "OWASPASVS": [
+                  "1.10",
+                  "10.3.2"
+                ],
+                "OWASPMASVS": [
+                  "7.1"
+                ],
+                "OWASPSAMM": [
+                  "OE3-B"
+                ],
+                "PCISSLC": [
+                  "5.1",
+                  "6.1"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls",
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SA-10"
+                ],
+                "SP80053": [
+                  "SA-10"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PS.2",
+          "title": "Provide a Mechanism for Verifying Software Release Integrity",
+          "text": "Help software acquirers ensure that the software they acquire is legitimate and has not been tampered with.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PS.2.1",
+              "text": "Make software integrity verification information available to software acquirers.",
+              "references": {
+                "BSAFSS": [
+                  "SM.4",
+                  "SM.5",
+                  "SM.6"
+                ],
+                "BSIMM": [
+                  "SE2.4"
+                ],
+                "CNCFSSCP": [
+                  "Securing Deployments—Verification"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(ix)",
+                  "4e(x)"
+                ],
+                "IEC62443": [
+                  "SM-6",
+                  "SM-8",
+                  "SUM-4"
+                ],
+                "NISTCSF": [
+                  "PR.DS-6"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.4"
+                ],
+                "OWASPSAMM": [
+                  "OE3-B"
+                ],
+                "OWASPSCVS": [
+                  "4"
+                ],
+                "PCISSLC": [
+                  "6.1",
+                  "6.2"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-8"
+                ],
+                "SP800181": [
+                  "K0178"
+                ],
+                "SP80053": [
+                  "SA-8"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PS.3",
+          "title": "Archive and Protect Each Software Release",
+          "text": "Preserve software releases in order to help identify, analyze, and eliminate vulnerabilities discovered in the software after release.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PS.3.1",
+              "text": "Securely archive the necessary files and supporting data (e.g., integrity verification information, provenance data) to be retained for each software release.",
+              "references": {
+                "BSAFSS": [
+                  "PD.1-5",
+                  "DE.1-2",
+                  "IA.2"
+                ],
+                "CNCFSSCP": [
+                  "Securing Artefacts—Automation",
+                  "Controlled Environments",
+                  "Encryption",
+                  "Securing Deployments—Verification"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(vi)",
+                  "4e(ix)",
+                  "4e(x)"
+                ],
+                "IDASOAR": [
+                  "25"
+                ],
+                "IEC62443": [
+                  "SM-6",
+                  "SM-7"
+                ],
+                "NISTCSF": [
+                  "PR.IP-4"
+                ],
+                "OWASPSCVS": [
+                  "1",
+                  "3.18",
+                  "3.19",
+                  "6.3"
+                ],
+                "PCISSLC": [
+                  "5.2",
+                  "6.1",
+                  "6.2"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SA-10",
+                  "SA-15(11)",
+                  "SR-4"
+                ],
+                "SP80053": [
+                  "SA-10",
+                  "SA-15",
+                  "SA-15(11)",
+                  "SR-4"
+                ]
+              }
+            },
+            {
+              "id": "PS.3.2",
+              "text": "Collect, safeguard, maintain, and share provenance data for all components of each software release (e.g., in a software bill of materials .SBOM).",
+              "references": {
+                "BSAFSS": [
+                  "SM.2"
+                ],
+                "BSIMM": [
+                  "SE3.6"
+                ],
+                "CNCFSSCP": [
+                  "Securing Materials—Verification",
+                  "Automation"
+                ],
+                "EO14028": [
+                  "4e(vi)",
+                  "4e(vii)",
+                  "4e(ix)",
+                  "4e(x)"
+                ],
+                "NTIASBOM": [
+                  "All"
+                ],
+                "OWASPSCVS": [
+                  "1.4",
+                  "2"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls"
+                ],
+                "SCTPC": [
+                  "MAINTAIN3"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SR-3",
+                  "SR-4"
+                ],
+                "SP80053": [
+                  "SA-8",
+                  "SR-3",
+                  "SR-4"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PW",
+      "name": "Produce Well-Secured Software",
+      "description": "",
+      "practices": [
+        {
+          "id": "PW.1",
+          "title": "Design Software to Meet Security Requirements and Mitigate Security Risks",
+          "text": "Identify and evaluate the security requirements for the software; determine what security risks the software is likely to face during operation and how the software’s design and architecture should mitigate those risks; and justify any cases where risk-based analysis indicates that security requirements should be relaxed or waived. Addressing security requirements and risks during software design (secure by design) is key for improving software security and also helps improve development efficiency.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.1.1",
+              "text": "Use forms of risk modeling – such as threat modeling, attack modeling, or attack surface mapping – to help assess the security risk for the software.",
+              "references": {
+                "BSAFSS": [
+                  "SC.1"
+                ],
+                "BSIMM": [
+                  "AM1.2",
+                  "AM1.3",
+                  "AM1.5",
+                  "AM2.1",
+                  "AM2.2",
+                  "AM2.5",
+                  "AM2.6",
+                  "AM2.7",
+                  "SFD2.2",
+                  "AA1.1",
+                  "AA1.2",
+                  "AA1.3",
+                  "AA2.1"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "1"
+                ],
+                "IEC62443": [
+                  "SM-4",
+                  "SR-1",
+                  "SR-2",
+                  "SD-1"
+                ],
+                "IR8397": [
+                  "2.1"
+                ],
+                "ISO27034": [
+                  "7.3.3"
+                ],
+                "MSSDL": [
+                  "4"
+                ],
+                "NISTCSF": [
+                  "ID.RA"
+                ],
+                "OWASPASVS": [
+                  "1.1.2",
+                  "1.2",
+                  "1.4",
+                  "1.6",
+                  "1.8",
+                  "1.9",
+                  "1.11",
+                  "2",
+                  "3",
+                  "4",
+                  "6",
+                  "8",
+                  "9",
+                  "11",
+                  "12",
+                  "13"
+                ],
+                "OWASPMASVS": [
+                  "1.6",
+                  "1.8",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6"
+                ],
+                "OWASPSAMM": [
+                  "TA1-A",
+                  "TA1-B",
+                  "TA3-B",
+                  "DR1-A"
+                ],
+                "PCISSLC": [
+                  "3.2",
+                  "3.3"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 3"
+                ],
+                "SCFPSSD": [
+                  "Threat Modeling"
+                ],
+                "SCTTM": [
+                  "Entire guide"
+                ],
+                "SP800160": [
+                  "3.3.4",
+                  "3.4.5"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SA-11(2)",
+                  "SA-11(6)",
+                  "SA-15(5)"
+                ],
+                "SP800181": [
+                  "T0038",
+                  "T0062",
+                  "K0005",
+                  "K0009",
+                  "K0038",
+                  "K0039",
+                  "K0070",
+                  "K0080",
+                  "K0119",
+                  "K0147",
+                  "K0149",
+                  "K0151",
+                  "K0152",
+                  "K0160",
+                  "K0161",
+                  "K0162",
+                  "K0165",
+                  "K0297",
+                  "K0310",
+                  "K0344",
+                  "K0362",
+                  "K0487",
+                  "K0624",
+                  "S0006",
+                  "S0009",
+                  "S0022",
+                  "S0078",
+                  "S0171",
+                  "S0229",
+                  "S0248",
+                  "A0092",
+                  "A0093",
+                  "A0107"
+                ],
+                "SP80053": [
+                  "SA-8",
+                  "SA-11(2)",
+                  "SA-11(6)",
+                  "SA-15(5)"
+                ]
+              }
+            },
+            {
+              "id": "PW.1.2",
+              "text": "Track and maintain the software’s security requirements, risks, and design decisions.",
+              "references": {
+                "BSAFSS": [
+                  "SC.1-1",
+                  "PD.1-1"
+                ],
+                "BSIMM": [
+                  "SFD3.1",
+                  "SFD3.3",
+                  "AA2.2",
+                  "AA3.2"
+                ],
+                "EO14028": [
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SD-1"
+                ],
+                "ISO27034": [
+                  "7.3.3"
+                ],
+                "MSSDL": [
+                  "4"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "OWASPASVS": [
+                  "1.1.3",
+                  "1.1.4"
+                ],
+                "OWASPMASVS": [
+                  "1.3",
+                  "1.6"
+                ],
+                "OWASPSAMM": [
+                  "DR1-B"
+                ],
+                "PCISSLC": [
+                  "3.2",
+                  "3.3"
+                ],
+                "SP800161": [
+                  "SA-8",
+                  "SA-17"
+                ],
+                "SP800181": [
+                  "T0256",
+                  "K0005",
+                  "K0038",
+                  "K0039",
+                  "K0147",
+                  "K0149",
+                  "K0160",
+                  "K0161",
+                  "K0162",
+                  "K0165",
+                  "K0344",
+                  "K0362",
+                  "K0487",
+                  "S0006",
+                  "S0009",
+                  "S0078",
+                  "S0171",
+                  "S0229",
+                  "S0248",
+                  "A0092",
+                  "A0107"
+                ],
+                "SP80053": [
+                  "SA-8",
+                  "SA-10",
+                  "SA-17"
+                ]
+              }
+            },
+            {
+              "id": "PW.1.3",
+              "text": "Where appropriate, build in support for using standardized security features and services (e.g., enabling software to integrate with existing log management, identity management, access control, and vulnerability management systems) instead of creating proprietary implementations of security features and services. .Formerly PW.4.3",
+              "references": {
+                "BSAFSS": [
+                  "SI.2-1",
+                  "SI.2-2",
+                  "LO.1"
+                ],
+                "BSIMM": [
+                  "SFD1.1",
+                  "SFD2.1",
+                  "SFD3.2",
+                  "SR1.1",
+                  "SR3.4"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SD-1",
+                  "SD-4"
+                ],
+                "MSSDL": [
+                  "5"
+                ],
+                "OWASPASVS": [
+                  "1.1.6"
+                ],
+                "OWASPSAMM": [
+                  "SA2-A"
+                ],
+                "SCFPSSD": [
+                  "Standardize Identity and Access Management",
+                  "Establish Log Requirements and Audit Practices"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.2",
+          "title": "Review the Software Design to Verify Compliance with Security Requirements and Risk Information",
+          "text": "Help ensure that the software will meet the security requirements and satisfactorily address the identified risk information.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.2.1",
+              "text": "Have 1) a qualified person (or people) who were not involved with the design and/or 2) automated processes instantiated in the toolchain review the software design to confirm and enforce that it meets all of the security requirements and satisfactorily addresses the identified risk information.",
+              "references": {
+                "BSAFSS": [
+                  "TV.3"
+                ],
+                "BSIMM": [
+                  "AA1.1",
+                  "AA1.2",
+                  "AA1.3",
+                  "AA2.1",
+                  "AA3.1"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-2",
+                  "SR-2",
+                  "SR-5",
+                  "SD-3",
+                  "SD-4",
+                  "SI-2"
+                ],
+                "ISO27034": [
+                  "7.3.3"
+                ],
+                "OWASPASVS": [
+                  "1.1.5"
+                ],
+                "OWASPSAMM": [
+                  "DR1-A",
+                  "DR1-B"
+                ],
+                "PCISSLC": [
+                  "3.2"
+                ],
+                "SP800181": [
+                  "T0328",
+                  "K0038",
+                  "K0039",
+                  "K0070",
+                  "K0080",
+                  "K0119",
+                  "K0152",
+                  "K0153",
+                  "K0161",
+                  "K0165",
+                  "K0172",
+                  "K0297",
+                  "S0006",
+                  "S0009",
+                  "S0022",
+                  "S0036",
+                  "S0141",
+                  "S0171"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.4",
+          "title": "Reuse Existing, Well-Secured Software When Feasible Instead of Duplicating Functionality",
+          "text": "Lower the costs of software development, expedite software development, and decrease the likelihood of introducing additional security vulnerabilities into the software by reusing software modules and services that have already had their security posture checked. This is particularly important for software that implements security functionality, such as cryptographic modules and protocols.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.4.1",
+              "text": "Acquire and maintain well-secured software components (e.g., software libraries, modules, middleware, frameworks) from commercial, open-source, and other third-party developers for use by the organization’s software.",
+              "references": {
+                "BSAFSS": [
+                  "SM.2"
+                ],
+                "BSIMM": [
+                  "SFD2.1",
+                  "SFD3.2",
+                  "SR2.4",
+                  "SR3.1",
+                  "SE3.6"
+                ],
+                "CNCFSSCP": [
+                  "Securing Materials—Verification"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(vi)",
+                  "4e(ix)",
+                  "4e(x)"
+                ],
+                "IDASOAR": [
+                  "19"
+                ],
+                "IEC62443": [
+                  "SM-9",
+                  "SM-10"
+                ],
+                "MSSDL": [
+                  "6"
+                ],
+                "NISTCSF": [
+                  "ID.SC-2"
+                ],
+                "OWASPASVS": [
+                  "1.1.6"
+                ],
+                "OWASPSAMM": [
+                  "SA1-A"
+                ],
+                "OWASPSCVS": [
+                  "4"
+                ],
+                "SCSIC": [
+                  "Vendor Sourcing Integrity Controls"
+                ],
+                "SCTPC": [
+                  "MAINTAIN"
+                ],
+                "SP800161": [
+                  "SA-4",
+                  "SA-5",
+                  "SA-8(3)",
+                  "SA-10(6)",
+                  "SR-3",
+                  "SR-4"
+                ],
+                "SP800181": [
+                  "K0039"
+                ],
+                "SP80053": [
+                  "SA-4",
+                  "SA-5",
+                  "SA-8(3)",
+                  "SA-10(6)",
+                  "SR-3",
+                  "SR-4"
+                ]
+              }
+            },
+            {
+              "id": "PW.4.2",
+              "text": "Create and maintain well-secured software components in-house following SDLC processes to meet common internal software development needs that cannot be better met by third-party software components.",
+              "references": {
+                "BSIMM": [
+                  "SFD1.1",
+                  "SFD2.1",
+                  "SFD3.2",
+                  "SR1.1"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "19"
+                ],
+                "OWASPASVS": [
+                  "1.1.6"
+                ],
+                "SCTPC": [
+                  "MAINTAIN"
+                ],
+                "SP800161": [
+                  "SA-8(3)"
+                ],
+                "SP800181": [
+                  "SP-DEV-001"
+                ],
+                "SP80053": [
+                  "SA-8(3)"
+                ]
+              }
+            },
+            {
+              "id": "PW.4.4",
+              "text": "Verify that acquired commercial, open-source, and all other third-party software components comply with the requirements, as defined by the organization, throughout their life cycles.",
+              "references": {
+                "BSAFSS": [
+                  "SC.3-1",
+                  "SM.2-1",
+                  "SM.2-2",
+                  "SM.2-3",
+                  "TV.2",
+                  "TV.3"
+                ],
+                "BSIMM": [
+                  "CP3.2",
+                  "SR2.4",
+                  "SR3.1",
+                  "SR3.2",
+                  "SE2.4",
+                  "SE3.6"
+                ],
+                "CNCFSSCP": [
+                  "Securing Materials—Verification",
+                  "Automation"
+                ],
+                "EO14028": [
+                  "4e(iii)",
+                  "4e(iv)",
+                  "4e(vi)",
+                  "4e(ix)",
+                  "4e(x)"
+                ],
+                "IDASOAR": [
+                  "21"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SM-9",
+                  "SM-10",
+                  "DM-1"
+                ],
+                "IR8397": [
+                  "2.11"
+                ],
+                "MSSDL": [
+                  "7"
+                ],
+                "NISTCSF": [
+                  "ID.SC-4",
+                  "PR.DS-6"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "OWASPASVS": [
+                  "10",
+                  "14.2"
+                ],
+                "OWASPMASVS": [
+                  "7.5"
+                ],
+                "OWASPSAMM": [
+                  "TA3-A",
+                  "SR3-B"
+                ],
+                "OWASPSCVS": [
+                  "4",
+                  "5",
+                  "6"
+                ],
+                "PCISSLC": [
+                  "3.2",
+                  "3.4",
+                  "4.1"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 8"
+                ],
+                "SCFPSSD": [
+                  "Manage Security Risk Inherent in the Use of Third-Party Components"
+                ],
+                "SCSIC": [
+                  "Vendor Sourcing Integrity Controls",
+                  "Peer Reviews and Security Testing"
+                ],
+                "SCTPC": [
+                  "MAINTAIN",
+                  "ASSESS"
+                ],
+                "SP800160": [
+                  "3.1.2",
+                  "3.3.8"
+                ],
+                "SP800161": [
+                  "SA-4",
+                  "SA-8",
+                  "SA-9",
+                  "SA-9(3)",
+                  "SR-3",
+                  "SR-4",
+                  "SR-4(3)",
+                  "SR-4(4)"
+                ],
+                "SP800181": [
+                  "SP-DEV-002",
+                  "K0153",
+                  "K0266",
+                  "S0298"
+                ],
+                "SP80053": [
+                  "SA-9",
+                  "SR-3",
+                  "SR-4",
+                  "SR-4(3)",
+                  "SR-4(4)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.5",
+          "title": "Create Source Code by Adhering to Secure Coding Practices",
+          "text": "Decrease the number of security vulnerabilities in the software, and reduce costs by minimizing vulnerabilities introduced during source code creation that meet or exceed organization-defined vulnerability severity criteria.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.5.1",
+              "text": "Follow all secure coding practices that are appropriate to the development languages and environment to meet the organization’s requirements.",
+              "references": {
+                "BSAFSS": [
+                  "SC.2",
+                  "SC.3",
+                  "LO.1",
+                  "EE.1"
+                ],
+                "BSIMM": [
+                  "SR3.3",
+                  "CR1.4",
+                  "CR3.5"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "2"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SI-2"
+                ],
+                "ISO27034": [
+                  "7.3.5"
+                ],
+                "MSSDL": [
+                  "9"
+                ],
+                "OWASPASVS": [
+                  "1.1.7",
+                  "1.5",
+                  "1.7",
+                  "5",
+                  "7"
+                ],
+                "OWASPMASVS": [
+                  "7.6"
+                ],
+                "SCFPSSD": [
+                  "Establish Log Requirements and Audit Practices",
+                  "Use Code Analysis Tools to Find Security Issues Early",
+                  "Handle Data Safely",
+                  "Handle Errors",
+                  "Use Safe Functions Only"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "T0013",
+                  "T0077",
+                  "T0176",
+                  "K0009",
+                  "K0016",
+                  "K0039",
+                  "K0070",
+                  "K0140",
+                  "K0624",
+                  "S0019",
+                  "S0060",
+                  "S0149",
+                  "S0172",
+                  "S0266",
+                  "A0036",
+                  "A0047"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.6",
+          "title": "Configure the Compilation, Interpreter, and Build Processes to Improve Executable Security",
+          "text": "Decrease the number of security vulnerabilities in the software and reduce costs by eliminating vulnerabilities before testing occurs.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.6.1",
+              "text": "Use compiler, interpreter, and build tools that offer features to improve executable security.",
+              "references": {
+                "BSAFSS": [
+                  "DE.2-1"
+                ],
+                "BSIMM": [
+                  "SE2.4"
+                ],
+                "CNCFSSCP": [
+                  "Securing Build Pipelines—Verification",
+                  "Automation"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-2"
+                ],
+                "MSSDL": [
+                  "8"
+                ],
+                "SCAGILE": [
+                  "Operational Security Task 3"
+                ],
+                "SCFPSSD": [
+                  "Use Current Compiler and Toolchain Versions and Secure Compiler Options"
+                ],
+                "SCSIC": [
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            },
+            {
+              "id": "PW.6.2",
+              "text": "Determine which compiler, interpreter, and build tool features should be used and how each should be configured, then implement and use the approved configurations.",
+              "references": {
+                "BSAFSS": [
+                  "DE.2-3",
+                  "DE.2-4",
+                  "DE.2-5"
+                ],
+                "BSIMM": [
+                  "SE2.4",
+                  "SE3.2"
+                ],
+                "CNCFSSCP": [
+                  "Securing Build Pipelines—Verification",
+                  "Automation"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-2"
+                ],
+                "IR8397": [
+                  "2.5"
+                ],
+                "MSSDL": [
+                  "8"
+                ],
+                "OWASPASVS": [
+                  "14.1",
+                  "14.2.1"
+                ],
+                "OWASPMASVS": [
+                  "7.2"
+                ],
+                "PCISSLC": [
+                  "3.2"
+                ],
+                "SCAGILE": [
+                  "Operational Security Task 8"
+                ],
+                "SCFPSSD": [
+                  "Use Current Compiler and Toolchain Versions and Secure Compiler Options"
+                ],
+                "SCSIC": [
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-15",
+                  "SR-9"
+                ],
+                "SP800181": [
+                  "K0039",
+                  "K0070"
+                ],
+                "SP80053": [
+                  "SA-15",
+                  "SR-9"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.7",
+          "title": "Review and/or Analyze Human-Readable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements",
+          "text": "Help identify vulnerabilities so that they can be corrected before the software is released to prevent exploitation. Using automated methods lowers the effort and resources needed to detect vulnerabilities. Human-readable code includes source code, scripts, and any other form of code that an organization deems human-readable.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.7.1",
+              "text": "Determine whether code review (a person looks directly at the code to find issues) and/or code analysis (tools are used to find issues in code, either in a fully automated way or in conjunction with a person) should be used, as defined by the organization.",
+              "references": {
+                "BSIMM": [
+                  "CR1.5"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SM-5",
+                  "SI-1",
+                  "SVV-1"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "SCSIC": [
+                  "Peer Reviews and Security Testing"
+                ],
+                "SP800161": [
+                  "SA-11"
+                ],
+                "SP800181": [
+                  "SP-DEV-002",
+                  "K0013",
+                  "K0039",
+                  "K0070",
+                  "K0153",
+                  "K0165",
+                  "S0174"
+                ],
+                "SP80053": [
+                  "SA-11"
+                ]
+              }
+            },
+            {
+              "id": "PW.7.2",
+              "text": "Perform the code review and/or code analysis based on the organization’s secure coding standards, and record and triage all discovered issues and recommended remediations in the development team’s workflow or issue tracking system.",
+              "references": {
+                "BSAFSS": [
+                  "TV.2",
+                  "PD.1-4"
+                ],
+                "BSIMM": [
+                  "CR1.2",
+                  "CR1.4",
+                  "CR1.6",
+                  "CR2.6",
+                  "CR2.7",
+                  "CR3.4",
+                  "CR3.5"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "3",
+                  "4",
+                  "5",
+                  "14",
+                  "15",
+                  "48"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SVV-1",
+                  "SVV-2"
+                ],
+                "IR8397": [
+                  "2.3",
+                  "2.4"
+                ],
+                "ISO27034": [
+                  "7.3.6"
+                ],
+                "MSSDL": [
+                  "9",
+                  "10"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "OWASPASVS": [
+                  "1.1.7",
+                  "10"
+                ],
+                "OWASPMASVS": [
+                  "7.5"
+                ],
+                "OWASPSAMM": [
+                  "IR1-B",
+                  "IR2-A",
+                  "IR2-B",
+                  "IR3-A"
+                ],
+                "PCISSLC": [
+                  "3.2",
+                  "4.1"
+                ],
+                "SCAGILE": [
+                  "Operational Security Tasks 4",
+                  "7",
+                  "Tasks Requiring the Help of Security Experts 10"
+                ],
+                "SCFPSSD": [
+                  "Use Code Analysis Tools to Find Security Issues Early",
+                  "Use Static Analysis Security Testing Tools",
+                  "Perform Manual Verification of Security Features/Mitigations"
+                ],
+                "SCSIC": [
+                  "Peer Reviews and Security Testing"
+                ],
+                "SP800161": [
+                  "SA-11",
+                  "SA-11(1)",
+                  "SA-11(4)",
+                  "SA-15(7)"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "SP-DEV-002",
+                  "T0013",
+                  "T0111",
+                  "T0176",
+                  "T0267",
+                  "T0516",
+                  "K0009",
+                  "K0039",
+                  "K0070",
+                  "K0140",
+                  "K0624",
+                  "S0019",
+                  "S0060",
+                  "S0078",
+                  "S0137",
+                  "S0149",
+                  "S0167",
+                  "S0174",
+                  "S0242",
+                  "S0266",
+                  "A0007",
+                  "A0015",
+                  "A0036",
+                  "A0044",
+                  "A0047"
+                ],
+                "SP80053": [
+                  "SA-11",
+                  "SA-11(1)",
+                  "SA-11(4)",
+                  "SA-15(7)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.8",
+          "title": "Test Executable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements",
+          "text": "Help identify vulnerabilities so that they can be corrected before the software is released in order to prevent exploitation. Using automated methods lowers the effort and resources needed to detect vulnerabilities and improves traceability and repeatability. Executable code includes binaries, directly executed bytecode and source code, and any other form of code that an organization deems executable.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.8.1",
+              "text": "Determine whether executable code testing should be performed to find vulnerabilities not identified by previous reviews, analysis, or testing and, if so, which types of testing should be used.",
+              "references": {
+                "BSAFSS": [
+                  "TV.3"
+                ],
+                "BSIMM": [
+                  "PT2.3"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SVV-1",
+                  "SVV-2",
+                  "SVV-3",
+                  "SVV-4",
+                  "SVV-5"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "SCSIC": [
+                  "Peer Reviews and Security Testing"
+                ],
+                "SP800161": [
+                  "SA-11"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "SP-DEV-002",
+                  "T0456",
+                  "K0013",
+                  "K0039",
+                  "K0070",
+                  "K0153",
+                  "K0165",
+                  "K0342",
+                  "K0367",
+                  "K0536",
+                  "K0624",
+                  "S0001",
+                  "S0015",
+                  "S0026",
+                  "S0061",
+                  "S0083",
+                  "S0112",
+                  "S0135"
+                ],
+                "SP80053": [
+                  "SA-11"
+                ]
+              }
+            },
+            {
+              "id": "PW.8.2",
+              "text": "Scope the testing, design the tests, perform the testing, and document the results, including recording and triaging all discovered issues and recommended remediations in the development team’s workflow or issue tracking system.",
+              "references": {
+                "BSAFSS": [
+                  "TV.3",
+                  "TV.5",
+                  "PD.1-4"
+                ],
+                "BSIMM": [
+                  "ST1.1",
+                  "ST1.3",
+                  "ST1.4",
+                  "ST2.4",
+                  "ST2.5",
+                  "ST2.6",
+                  "ST3.3",
+                  "ST3.4",
+                  "ST3.5",
+                  "ST3.6",
+                  "PT1.1",
+                  "PT1.2",
+                  "PT1.3",
+                  "PT3.1"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(v)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "7",
+                  "8",
+                  "10",
+                  "11",
+                  "38",
+                  "39",
+                  "43",
+                  "44",
+                  "48",
+                  "55",
+                  "56",
+                  "57"
+                ],
+                "IEC62443": [
+                  "SM-5",
+                  "SM-13",
+                  "SI-1",
+                  "SVV-1",
+                  "SVV-2",
+                  "SVV-3",
+                  "SVV-4",
+                  "SVV-5"
+                ],
+                "IR8397": [
+                  "2.6",
+                  "2.7",
+                  "2.8",
+                  "2.9",
+                  "2.10",
+                  "2.11"
+                ],
+                "ISO27034": [
+                  "7.3.6"
+                ],
+                "MSSDL": [
+                  "10",
+                  "11"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "OWASPMASVS": [
+                  "7.5"
+                ],
+                "OWASPSAMM": [
+                  "ST1-A",
+                  "ST1-B",
+                  "ST2-A",
+                  "ST2-B",
+                  "ST3-A"
+                ],
+                "PCISSLC": [
+                  "4.1"
+                ],
+                "SCAGILE": [
+                  "Operational Security Tasks 10",
+                  "11",
+                  "Tasks Requiring the Help of Security Experts 4",
+                  "5",
+                  "6",
+                  "7"
+                ],
+                "SCFPSSD": [
+                  "Perform Dynamic Analysis Security Testing",
+                  "Fuzz Parsers",
+                  "Network Vulnerability Scanning",
+                  "Perform Automated Functional Testing of Security Features/Mitigations",
+                  "Perform Penetration Testing"
+                ],
+                "SCSIC": [
+                  "Peer Reviews and Security Testing"
+                ],
+                "SP800161": [
+                  "SA-11",
+                  "SA-11(5)",
+                  "SA-11(8)",
+                  "SA-15(7)"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "SP-DEV-002",
+                  "T0013",
+                  "T0028",
+                  "T0169",
+                  "T0176",
+                  "T0253",
+                  "T0266",
+                  "T0456",
+                  "T0516",
+                  "K0009",
+                  "K0039",
+                  "K0070",
+                  "K0272",
+                  "K0339",
+                  "K0342",
+                  "K0362",
+                  "K0536",
+                  "K0624",
+                  "S0001",
+                  "S0015",
+                  "S0046",
+                  "S0051",
+                  "S0078",
+                  "S0081",
+                  "S0083",
+                  "S0135",
+                  "S0137",
+                  "S0167",
+                  "S0242",
+                  "A0015"
+                ],
+                "SP80053": [
+                  "SA-11",
+                  "SA-11(5)",
+                  "SA-11(8)",
+                  "SA-15(7)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "PW.9",
+          "title": "Configure Software to Have Secure Settings by Default",
+          "text": "Help improve the security of the software at the time of installation to reduce the likelihood of the software being deployed with weak security settings, putting it at greater risk of compromise.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "PW.9.1",
+              "text": "Define a secure baseline by determining how to configure each setting that has an effect on security or a security-related setting so that the default settings are secure and do not weaken the security functions provided by the platform, network infrastructure, or services.",
+              "references": {
+                "BSAFSS": [
+                  "CF.1"
+                ],
+                "BSIMM": [
+                  "SE2.2"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "23"
+                ],
+                "IEC62443": [
+                  "SD-4",
+                  "SVV-1",
+                  "SG-1"
+                ],
+                "ISO27034": [
+                  "7.3.5"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 12"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls",
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800181": [
+                  "SP-DEV-002",
+                  "K0009",
+                  "K0039",
+                  "K0073",
+                  "K0153",
+                  "K0165",
+                  "K0275",
+                  "K0531",
+                  "S0167"
+                ]
+              }
+            },
+            {
+              "id": "PW.9.2",
+              "text": "Implement the default settings (or groups of default settings, if applicable), and document each setting for software administrators.",
+              "references": {
+                "BSAFSS": [
+                  "CF.1"
+                ],
+                "BSIMM": [
+                  "SE2.2"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(ix)"
+                ],
+                "IDASOAR": [
+                  "23"
+                ],
+                "IEC62443": [
+                  "SG-3"
+                ],
+                "OWASPSAMM": [
+                  "OE1-A"
+                ],
+                "PCISSLC": [
+                  "8.1",
+                  "8.2"
+                ],
+                "SCAGILE": [
+                  "Tasks Requiring the Help of Security Experts 12"
+                ],
+                "SCFPSSD": [
+                  "Verify Secure Configurations and Use of Platform Mitigation"
+                ],
+                "SCSIC": [
+                  "Vendor Software Delivery Integrity Controls",
+                  "Vendor Software Development Integrity Controls"
+                ],
+                "SP800161": [
+                  "SA-5",
+                  "SA-8(23)"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "K0009",
+                  "K0039",
+                  "K0073",
+                  "K0153",
+                  "K0165",
+                  "K0275",
+                  "K0531"
+                ],
+                "SP80053": [
+                  "SA-5",
+                  "SA-8(23)"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RV",
+      "name": "Respond to Vulnerabilities",
+      "description": "",
+      "practices": [
+        {
+          "id": "RV.1",
+          "title": "Identify and Confirm Vulnerabilities on an Ongoing Basis",
+          "text": "Help ensure that vulnerabilities are identified more quickly so that they can be remediated more quickly in accordance with risk, reducing the window of opportunity for attackers.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "RV.1.1",
+              "text": "Gather information from software acquirers, users, and public sources on potential vulnerabilities in the software and third-party components that the software uses, and investigate all credible reports.",
+              "references": {
+                "BSAFSS": [
+                  "VM.1-3",
+                  "VM.3"
+                ],
+                "BSIMM": [
+                  "AM1.5",
+                  "CMVM1.2",
+                  "CMVM2.1",
+                  "CMVM3.4",
+                  "CMVM3.7"
+                ],
+                "CNCFSSCP": [
+                  "Securing Materials—Verification"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(vi)",
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-1",
+                  "DM-2",
+                  "DM-3"
+                ],
+                "ISO29147": [
+                  "6.2.1",
+                  "6.2.2",
+                  "6.2.4",
+                  "6.3",
+                  "6.5"
+                ],
+                "ISO30111": [
+                  "7.1.3"
+                ],
+                "OWASPSAMM": [
+                  "IM1-A",
+                  "IM2-B",
+                  "EH1-B"
+                ],
+                "OWASPSCVS": [
+                  "4"
+                ],
+                "PCISSLC": [
+                  "3.4",
+                  "4.1",
+                  "9.1"
+                ],
+                "SCAGILE": [
+                  "Operational Security Task 5"
+                ],
+                "SCFPSSD": [
+                  "Vulnerability Response and Disclosure"
+                ],
+                "SCTPC": [
+                  "MONITOR1"
+                ],
+                "SP800161": [
+                  "SA-10",
+                  "SR-3",
+                  "SR-4"
+                ],
+                "SP800181": [
+                  "K0009",
+                  "K0038",
+                  "K0040",
+                  "K0070",
+                  "K0161",
+                  "K0362",
+                  "S0078"
+                ],
+                "SP80053": [
+                  "SA-10",
+                  "SR-3",
+                  "SR-4"
+                ]
+              }
+            },
+            {
+              "id": "RV.1.2",
+              "text": "Review, analyze, and/or test the software’s code to identify or confirm the presence of previously undetected vulnerabilities.",
+              "references": {
+                "BSAFSS": [
+                  "VM.1-2",
+                  "VM.2-1"
+                ],
+                "BSIMM": [
+                  "CMVM3.1"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(vi)",
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "SVV-2",
+                  "SVV-3",
+                  "SVV-4",
+                  "DM-1",
+                  "DM-2"
+                ],
+                "ISO27034": [
+                  "7.3.6"
+                ],
+                "ISO29147": [
+                  "6.4"
+                ],
+                "ISO30111": [
+                  "7.1.4"
+                ],
+                "PCISSLC": [
+                  "3.4",
+                  "4.1"
+                ],
+                "SCAGILE": [
+                  "Operational Security Tasks 10",
+                  "11"
+                ],
+                "SP800161": [
+                  "SA-11"
+                ],
+                "SP800181": [
+                  "SP-DEV-002",
+                  "K0009",
+                  "K0039",
+                  "K0153"
+                ],
+                "SP80053": [
+                  "SA-11"
+                ]
+              }
+            },
+            {
+              "id": "RV.1.3",
+              "text": "Have a policy that addresses vulnerability disclosure and remediation, and implement the roles, responsibilities, and processes needed to support that policy.",
+              "references": {
+                "BSAFSS": [
+                  "VM.1-1",
+                  "VM.2"
+                ],
+                "BSIMM": [
+                  "CMVM1.1",
+                  "CMVM2.1",
+                  "CMVM3.3",
+                  "CMVM3.7"
+                ],
+                "EO14028": [
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-1",
+                  "DM-2",
+                  "DM-3",
+                  "DM-4",
+                  "DM-5"
+                ],
+                "ISO29147": [
+                  "All"
+                ],
+                "ISO30111": [
+                  "All"
+                ],
+                "MSSDL": [
+                  "12"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.3"
+                ],
+                "OWASPMASVS": [
+                  "1.11"
+                ],
+                "OWASPSAMM": [
+                  "IM1-A",
+                  "IM1-B",
+                  "IM2-A",
+                  "IM2-B"
+                ],
+                "PCISSLC": [
+                  "9.2",
+                  "9.3"
+                ],
+                "SCFPSSD": [
+                  "Vulnerability Response and Disclosure"
+                ],
+                "SP800160": [
+                  "3.3.8"
+                ],
+                "SP800161": [
+                  "SA-15(10)"
+                ],
+                "SP800181": [
+                  "K0041",
+                  "K0042",
+                  "K0151",
+                  "K0292",
+                  "K0317",
+                  "S0054",
+                  "A0025"
+                ],
+                "SP800216": [
+                  "All"
+                ],
+                "SP80053": [
+                  "SA-15(10)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "RV.2",
+          "title": "Assess, Prioritize, and Remediate Vulnerabilities",
+          "text": "Help ensure that vulnerabilities are remediated in accordance with risk to reduce the window of opportunity for attackers.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "RV.2.1",
+              "text": "Analyze each vulnerability to gather sufficient information about risk to plan its remediation or other risk response.",
+              "references": {
+                "BSAFSS": [
+                  "VM.2"
+                ],
+                "BSIMM": [
+                  "CMVM1.2",
+                  "CMVM2.2"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-2",
+                  "DM-3"
+                ],
+                "ISO30111": [
+                  "7.1.4"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "PCISSLC": [
+                  "3.4",
+                  "4.2"
+                ],
+                "SCAGILE": [
+                  "Operational Security Task 1",
+                  "Tasks Requiring the Help of Security Experts 10"
+                ],
+                "SP800160": [
+                  "3.3.8"
+                ],
+                "SP800161": [
+                  "SA-15(7)"
+                ],
+                "SP800181": [
+                  "K0009",
+                  "K0039",
+                  "K0070",
+                  "K0161",
+                  "K0165",
+                  "S0078"
+                ],
+                "SP80053": [
+                  "SA-10",
+                  "SA-15(7)"
+                ]
+              }
+            },
+            {
+              "id": "RV.2.2",
+              "text": "Plan and implement risk responses for vulnerabilities.",
+              "references": {
+                "BSAFSS": [
+                  "VM.1-1",
+                  "VM-2"
+                ],
+                "BSIMM": [
+                  "CMVM2.1"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(vi)",
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-4"
+                ],
+                "ISO30111": [
+                  "7.1.4",
+                  "7.1.5"
+                ],
+                "NISTLABEL": [
+                  "2.2.2.2"
+                ],
+                "PCISSLC": [
+                  "4.1",
+                  "4.2",
+                  "10.1"
+                ],
+                "SCAGILE": [
+                  "Operational Security Task 2"
+                ],
+                "SCFPSSD": [
+                  "Fix the Vulnerability",
+                  "Identify Mitigating Factors or Workarounds"
+                ],
+                "SCTPC": [
+                  "MITIGATE"
+                ],
+                "SP800160": [
+                  "3.3.8"
+                ],
+                "SP800161": [
+                  "SA-5",
+                  "SA-8",
+                  "SA-10",
+                  "SA-11",
+                  "SA-15(7)"
+                ],
+                "SP800181": [
+                  "T0163",
+                  "T0229",
+                  "T0264",
+                  "K0009",
+                  "K0070"
+                ],
+                "SP80053": [
+                  "SA-5",
+                  "SA-10",
+                  "SA-11",
+                  "SA-15(7)"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "RV.3",
+          "title": "Analyze Vulnerabilities to Identify Their Root Causes",
+          "text": "Help reduce the frequency of vulnerabilities in the future.",
+          "references": {},
+          "tasks": [
+            {
+              "id": "RV.3.1",
+              "text": "Analyze identified vulnerabilities to determine their root causes.",
+              "references": {
+                "BSAFSS": [
+                  "VM.2-1"
+                ],
+                "BSIMM": [
+                  "CMVM3.1",
+                  "CMVM3.2"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-3"
+                ],
+                "ISO30111": [
+                  "7.1.4"
+                ],
+                "OWASPSAMM": [
+                  "IM3-A"
+                ],
+                "PCISSLC": [
+                  "4.2"
+                ],
+                "SCFPSSD": [
+                  "Secure Development Lifecycle Feedback"
+                ],
+                "SP800181": [
+                  "T0047",
+                  "K0009",
+                  "K0039",
+                  "K0070",
+                  "K0343"
+                ]
+              }
+            },
+            {
+              "id": "RV.3.2",
+              "text": "Analyze the root causes over time to identify patterns, such as a particular secure coding practice not being followed consistently.",
+              "references": {
+                "BSAFSS": [
+                  "VM.2-1",
+                  "PD.1-3"
+                ],
+                "BSIMM": [
+                  "CP3.3",
+                  "CMVM3.2"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-4"
+                ],
+                "ISO30111": [
+                  "7.1.7"
+                ],
+                "OWASPSAMM": [
+                  "IM3-B"
+                ],
+                "PCISSLC": [
+                  "2.6",
+                  "4.2"
+                ],
+                "SCFPSSD": [
+                  "Secure Development Lifecycle Feedback"
+                ],
+                "SP800160": [
+                  "3.3.8"
+                ],
+                "SP800181": [
+                  "T0111",
+                  "K0009",
+                  "K0039",
+                  "K0070",
+                  "K0343"
+                ]
+              }
+            },
+            {
+              "id": "RV.3.3",
+              "text": "Review the software for similar vulnerabilities to eradicate a class of vulnerabilities, and proactively fix them rather than waiting for external reports.",
+              "references": {
+                "BSAFSS": [
+                  "VM.2"
+                ],
+                "BSIMM": [
+                  "CR3.3",
+                  "CMVM3.1"
+                ],
+                "EO14028": [
+                  "4e(iv)",
+                  "4e(viii)",
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "SI-1",
+                  "DM-3",
+                  "DM-4"
+                ],
+                "ISO30111": [
+                  "7.1.4"
+                ],
+                "PCISSLC": [
+                  "4.2"
+                ],
+                "SP800161": [
+                  "SA-11"
+                ],
+                "SP800181": [
+                  "SP-DEV-001",
+                  "SP-DEV-002",
+                  "K0009",
+                  "K0039",
+                  "K0070"
+                ],
+                "SP80053": [
+                  "SA-11"
+                ]
+              }
+            },
+            {
+              "id": "RV.3.4",
+              "text": "Review the SDLC process, and update it if appropriate to prevent (or reduce the likelihood of) the root cause recurring in updates to the software or in new software that is created.",
+              "references": {
+                "BSAFSS": [
+                  "PD.1-3"
+                ],
+                "BSIMM": [
+                  "CP3.3",
+                  "CMVM3.2"
+                ],
+                "EO14028": [
+                  "4e(ix)"
+                ],
+                "IEC62443": [
+                  "DM-6"
+                ],
+                "ISO30111": [
+                  "7.1.7"
+                ],
+                "MSSDL": [
+                  "2"
+                ],
+                "PCISSLC": [
+                  "2.6",
+                  "4.2"
+                ],
+                "SCFPSSD": [
+                  "Secure Development Lifecycle Feedback"
+                ],
+                "SP800161": [
+                  "SA-15"
+                ],
+                "SP800181": [
+                  "K0009",
+                  "K0039",
+                  "K0070"
+                ],
+                "SP80053": [
+                  "SA-15"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

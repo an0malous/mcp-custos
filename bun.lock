@@ -6,11 +6,11 @@
       "name": "casty-iso27001-mcp",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.12.1",
-        "xlsx": "^0.18.5",
       },
       "devDependencies": {
         "@types/bun": "latest",
         "typescript": "^5.7.0",
+        "xlsx": "^0.18.5",
       },
     },
   },

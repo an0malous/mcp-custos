@@ -1,0 +1,24 @@
+{
+  "_comment": "Drop into your project's .claude/settings.json. Replace MCP_PATH with the absolute path to the mcp-security-compliance checkout.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run /MCP_PATH/scripts/precheck-edit.ts"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "_comment": "Optional: prevent Claude from bypassing the pre-commit citation check. Humans can still --no-verify locally.",
+    "deny": [
+      "Bash(git commit*--no-verify*)",
+      "Bash(git commit*-n *)",
+      "Bash(git commit *-n)"
+    ]
+  }
+}

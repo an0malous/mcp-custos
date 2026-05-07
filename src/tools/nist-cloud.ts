@@ -1,3 +1,5 @@
+import { paginate } from "./_shared.js";
+
 interface NistCloudSource {
   id: string;
   title: string;
@@ -38,21 +40,23 @@ export async function lookupNistCloudTopic(topicId: string) {
   return topic ?? null;
 }
 
-export async function searchNistCloudTopics(query: string) {
+export async function searchNistCloudTopics(
+  query: string,
+  limit: number = 20
+) {
   const d = await load();
   const q = query.toLowerCase();
-  return d.topics
-    .filter(
-      (t) =>
-        t.title.toLowerCase().includes(q) ||
-        t.guidance.toLowerCase().includes(q)
-    )
-    .map((t) => ({
-      id: t.id,
-      title: t.title,
-      source: t.source,
-      nist_controls: t.nist_controls,
-    }));
+  const matches = d.topics.filter(
+    (t) =>
+      t.title.toLowerCase().includes(q) ||
+      t.guidance.toLowerCase().includes(q)
+  );
+  return paginate(matches, limit, (t) => ({
+    id: t.id,
+    title: t.title,
+    source: t.source,
+    nist_controls: t.nist_controls,
+  }));
 }
 
 export async function listNistCloudBySource(sourceId: string) {
@@ -85,5 +89,5 @@ export async function resolveNistCloudRefs(refIds: string[]) {
   const d = await load();
   return refIds
     .map((id) => d.topics.find((t) => t.id === id))
-    .filter((t): t is NistCloudTopic => t !== null);
+    .filter((t): t is NistCloudTopic => t !== undefined);
 }
