@@ -6,8 +6,9 @@ import {
   pathDomain,
   findKeywords,
   hasCitation,
+  extractCitations,
   resolveConfig,
-} from "./_compliance-detect.js";
+} from "./compliance-detect.js";
 
 describe("path detection", () => {
   test.each([
@@ -111,6 +112,49 @@ describe("citation detection", () => {
 
   test("does not match without framework id", () => {
     expect(hasCitation("// Refs: see above")).toBe(false);
+  });
+
+  test("matches SQL/Lua/Haskell -- comment", () => {
+    expect(hasCitation("-- Refs: NIST AC-2")).toBe(true);
+    expect(hasCitation("ALTER TABLE x;\n-- Refs: NIST AC-3")).toBe(true);
+  });
+
+  test("matches Python/Ruby/Shell # comment", () => {
+    expect(hasCitation("# Refs: NIST IA-5(1)")).toBe(true);
+  });
+
+  test("matches /* C-style block comment */", () => {
+    expect(hasCitation("/* Refs: NIST SC-13 */")).toBe(true);
+  });
+
+  test("matches *-prefixed JSDoc line", () => {
+    expect(hasCitation("  * Refs: ASVS V6.2.5")).toBe(true);
+  });
+});
+
+describe("extractCitations", () => {
+  test("pulls NIST and ASVS ids from mixed content", () => {
+    const r = extractCitations(
+      "// Refs: NIST SC-13, NIST IA-5(1), ASVS V6.2.5"
+    );
+    expect(r.nist).toEqual(["SC-13", "IA-5(1)"]);
+    expect(r.asvs).toEqual(["V6.2.5"]);
+  });
+
+  test("extracts across multiple comment leaders in one file", () => {
+    const r = extractCitations([
+      "-- Refs: NIST AC-2",
+      "# Refs: NIST IA-2",
+      "// Refs: ASVS V11.1.1",
+    ].join("\n"));
+    expect(r.nist).toEqual(["AC-2", "IA-2"]);
+    expect(r.asvs).toEqual(["V11.1.1"]);
+  });
+
+  test("returns empty arrays for content without citations", () => {
+    const r = extractCitations("function login() {}");
+    expect(r.nist).toEqual([]);
+    expect(r.asvs).toEqual([]);
   });
 });
 

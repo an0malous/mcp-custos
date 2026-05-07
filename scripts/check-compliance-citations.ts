@@ -2,11 +2,12 @@
 /**
  * Pre-commit / CI hook. Scans the staged diff (or a base..HEAD diff if
  * COMPLIANCE_BASE is set) for security-touching changes that lack
- * a "Refs:" / "Compliance:" citation. Warns and suggests controls; never
- * blocks unless invoked with --strict.
+ * a "Refs:" / "Compliance:" citation.
  *
- * Wire as a husky/lefthook pre-commit, or run in CI via:
- *   COMPLIANCE_BASE=origin/main bun run scripts/check-compliance-citations.ts --strict
+ * Usage:
+ *   bun run scripts/check-compliance-citations.ts          # warn, exit 0
+ *   bun run scripts/check-compliance-citations.ts --strict # warn, exit 1
+ *   COMPLIANCE_BASE=origin/main bun run ... --strict       # CI mode
  */
 import { spawnSync } from "node:child_process";
 import {
@@ -14,19 +15,19 @@ import {
   hasCitation,
   loadProjectConfig,
   resolveConfig,
-} from "./_compliance-detect.js";
-import { controlsForChange } from "../src/tools/meta.js";
-
-const cfg = resolveConfig(loadProjectConfig());
+  formatSuggestedControls,
+} from "../src/compliance-detect.js";
+import { parseAddedByFile } from "../src/diff-utils.js";
 
 const STRICT = process.argv.includes("--strict");
 const BASE = process.env.COMPLIANCE_BASE;
+const cfg = resolveConfig(loadProjectConfig());
 
 function git(...args: string[]): string {
   const r = spawnSync("git", args, { encoding: "utf8" });
   if (r.status !== 0) {
     process.stderr.write(`git ${args.join(" ")} failed: ${r.stderr}\n`);
-    process.exit(0);
+    process.exit(STRICT ? 1 : 0);
   }
   return r.stdout;
 }
@@ -41,37 +42,16 @@ const nameArgs = BASE
 const changedFiles = git(...nameArgs).split("\n").filter(Boolean);
 if (changedFiles.length === 0) process.exit(0);
 
-const diff = git(...diffArgs);
-
-interface FileBlock {
-  path: string;
-  added: string;
-}
-const blocks: FileBlock[] = [];
-let current: FileBlock | null = null;
-for (const line of diff.split("\n")) {
-  const m = line.match(/^\+\+\+ b\/(.+)$/);
-  if (m) {
-    current = { path: m[1], added: "" };
-    blocks.push(current);
-    continue;
-  }
-  if (current && line.startsWith("+") && !line.startsWith("+++")) {
-    current.added += line.slice(1) + "\n";
-  }
-}
+const blocks = parseAddedByFile(git(...diffArgs));
 
 const commitMsg = (() => {
-  if (BASE) {
-    return git("log", `${BASE}..HEAD`, "--format=%B");
-  }
+  if (BASE) return git("log", `${BASE}..HEAD`, "--format=%B");
   try {
     return Bun.file(".git/COMMIT_EDITMSG").text() as unknown as string;
   } catch {
     return "";
   }
 })();
-
 const commitHasCitation = hasCitation(
   typeof commitMsg === "string" ? commitMsg : ""
 );
@@ -82,45 +62,22 @@ interface Hit {
   matchedKeywords: string[];
 }
 const hits: Hit[] = [];
-for (const b of blocks) {
-  const r = detect(b.path, b.added, undefined, cfg);
-  if (!r.fired) continue;
-  if (r.hasCitation) continue;
-  if (commitHasCitation) continue;
-  hits.push({
-    path: b.path,
-    reason: r.reason!,
-    matchedKeywords: r.matchedKeywords,
-  });
+for (const [path, added] of blocks) {
+  const r = detect(path, added, undefined, cfg);
+  if (!r.fired || r.hasCitation || commitHasCitation) continue;
+  hits.push({ path, reason: r.reason!, matchedKeywords: r.matchedKeywords });
 }
 
 if (hits.length === 0) process.exit(0);
 
-const allKeywords = Array.from(
-  new Set(hits.flatMap((h) => h.matchedKeywords))
-);
-const allPaths = hits.map((h) => h.path);
-const description = [allPaths.join(" "), allKeywords.join(" ")]
+const description = [
+  hits.map((h) => h.path).join(" "),
+  Array.from(new Set(hits.flatMap((h) => h.matchedKeywords))).join(" "),
+]
   .filter(Boolean)
   .join(" ");
 
-let suggestion = "";
-try {
-  const checklist = await controlsForChange(description, "2", 5);
-  const nist = checklist.nist_800_53.results
-    .slice(0, 3)
-    .map((c: { id: string }) => c.id)
-    .join(", ");
-  const asvs = checklist.asvs.results
-    .slice(0, 2)
-    .map((c: { id: string }) => c.id)
-    .join(", ");
-  suggestion = [nist && `NIST ${nist}`, asvs && `ASVS ${asvs}`]
-    .filter(Boolean)
-    .join("; ");
-} catch {
-  /* no suggestions available */
-}
+const suggestion = await formatSuggestedControls(description, 3, 2);
 
 const lines: string[] = [];
 lines.push("[compliance-check] Security-touching changes without citation:");

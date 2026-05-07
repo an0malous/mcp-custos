@@ -129,7 +129,7 @@ Claude chains: `controls_for_change "handling PII"` → cross-checks ISO A.5.34 
 
 ## Compliance enforcement (optional)
 
-Two hooks ship in `scripts/` to make compliance citations consistent across Claude and human edits. Both opt-in. Both use the same path/keyword detection (`scripts/_compliance-detect.ts`) and call the MCP's `controls_for_change` to suggest specific NIST/ASVS IDs in their output.
+Two hooks ship in `scripts/` to make compliance citations consistent across Claude and human edits. Both opt-in. Both use the same path/keyword detection (`src/compliance-detect.ts`) and call the MCP's `controls_for_change` to suggest specific NIST/ASVS IDs in their output.
 
 | Layer | When it runs | Bypassable | Best for |
 |-------|--------------|-----------|----------|
@@ -141,37 +141,21 @@ Defaults are conservative — narrow paths (`auth/`, `crypto/`, `iam/`, `secrets
 
 ### Setup
 
-Drop the templates into your target project. Replace `/MCP_PATH/` with the absolute path to your `mcp-security-compliance` checkout.
-
-**Per-edit hook** — `templates/.claude/settings.json` →
+Quickest path — run the init script from this checkout, pointing at your target project:
 
 ```bash
-cp templates/.claude/settings.json /your/project/.claude/settings.json
-sed -i 's|/MCP_PATH/|/abs/path/to/mcp-security-compliance/|' /your/project/.claude/settings.json
+bun run init /path/to/your/project
 ```
 
-**Pre-commit hook** (with [husky](https://typicode.github.io/husky/)) — `templates/.husky/pre-commit`:
+It copies `.claude/settings.json`, `.husky/pre-commit`, and `.github/workflows/compliance-check.yml` into the target with the `MCP_PATH` placeholder substituted automatically. Skip individual layers with `--skip-hooks=husky,ci`.
 
-```bash
-mkdir -p /your/project/.husky
-cp templates/.husky/pre-commit /your/project/.husky/pre-commit
-chmod +x /your/project/.husky/pre-commit
-sed -i 's|/MCP_PATH/|/abs/path/to/mcp-security-compliance/|' /your/project/.husky/pre-commit
-```
-
-**CI enforcement** — `templates/.github/workflows/compliance-check.yml`:
-
-```bash
-mkdir -p /your/project/.github/workflows
-cp templates/.github/workflows/compliance-check.yml /your/project/.github/workflows/
-# edit the workflow to point at your fork of mcp-security-compliance
-```
+If you'd rather wire pieces manually, the templates live in `templates/` — replace `/MCP_PATH/` with the absolute path to your `mcp-security-compliance` checkout in each.
 
 ### What gets cited
 
 The hook treats any of these as a valid citation:
 
-- `// Refs: NIST <id>` (or `# Refs:` for languages with `#` comments)
+- `// Refs: NIST <id>` — also accepts `#`, `--`, `/* */`, and `*` comment leaders (covers Python, Ruby, Shell, SQL, Lua, Haskell, Elm, JS/TS, C, Java, Go, Rust, etc.)
 - `// Compliance: NIST <id>`
 - `Refs: NIST <id>` in the commit message
 - `// Refs: ASVS V<x.y.z>` (or commit equivalent)
@@ -187,14 +171,6 @@ bun run evidence /path/to/your/repo --out=COMPLIANCE.md
 ```
 
 It walks the repo, finds every `// Refs: NIST <id>` and `// Refs: ASVS <id>` annotation, resolves NIST → ISO Annex A via the bundled OLIR mappings, and emits a markdown file grouped by ISO control id with file:line evidence pointers. Hand to the auditor.
-
-## Onboarding a project
-
-```bash
-bun run init /path/to/your/project
-```
-
-Drops the per-edit hook config (`.claude/settings.json`), pre-commit hook (`.husky/pre-commit`), and CI workflow template (`.github/workflows/compliance-check.yml`) into the target project, with the `MCP_PATH` placeholder replaced by this checkout's absolute path. Skip individual templates with `--skip-hooks=husky,ci`.
 
 ## Tools
 
@@ -308,7 +284,7 @@ Pulls latest NIST 800-53 OSCAL, NIST SSDF OSCAL, OWASP ASVS release, and re-veri
 
 ## Data Provenance
 
-All guidance text is taken directly from official publications — no AI-generated summaries.
+All guidance text is taken directly from official publications — no AI-generated summaries. Each data file in `src/data/` carries its own `source` (or `control_titles_source` / `nist_mapping_source`) field so provenance is self-describing at the file level.
 
 | Dataset | Source Format | How It Was Extracted |
 |---------|--------------|---------------------|
@@ -317,7 +293,9 @@ All guidance text is taken directly from official publications — no AI-generat
 | OWASP ASVS 5.0 | [OWASP ASVS GitHub release JSON](https://github.com/OWASP/ASVS/releases) | Bundled directly from the official OWASP release artifact |
 | ISO 27001:2022 Annex A control IDs and titles | [ISO/IEC 27002:2022 sample preview](https://cdn.standards.iteh.ai/samples/75652/f9b90f856c0d4c3dbef74cf67374d1c5/ISO-IEC-27002-2022.pdf) (TOC) | Snapshotted to `src/data/iso-27002-2022-toc.json`; `bun run verify-iso` diffs `iso-27001-controls.json` against it. Only IDs and titles are reproduced (factual references); no descriptive text from the standard is shipped. |
 | ISO 27001 → NIST mappings | [OLIR spreadsheet](https://csrc.nist.gov/projects/olir/informative-reference-catalog/details?referenceId=99) | Parsed directly |
+| ISO 27017:2015 cloud control IDs and titles | ISO/IEC 27017:2015 (paywalled) | Only IDs and short titles reproduced (factual references). Guidance text comes from public-domain NIST cloud SPs via `nist_refs`. |
 | NIST cloud guidance | PDFs only (SP 800-144, 800-210, 800-146) | Verbatim text extracted from source PDFs; NIST 800-53 control mappings from SP 800-210 Table 4 |
+| CWE Top 25 (2024) | [MITRE CWE](https://cwe.mitre.org/top25/archive/2024/2024_cwe_top25.html) | IDs/names reproduced; ASVS chapter and NIST family mappings are curated by this project (not from an official crosswalk) |
 
 ## Limitations
 

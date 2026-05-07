@@ -28,8 +28,7 @@ async function load(): Promise<CweData> {
 }
 
 function normalizeId(id: string): string {
-  const upper = id.trim().toUpperCase();
-  return upper.startsWith("CWE-") ? upper : `CWE-${upper.replace(/^CWE/, "")}`;
+  return id.trim().toUpperCase().replace(/^(?:CWE-?)?/, "CWE-");
 }
 
 export async function lookupCwe(rawId: string) {

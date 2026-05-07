@@ -1,18 +1,23 @@
 #!/usr/bin/env bun
 /**
- * Claude Code PreToolUse hook for Edit/Write tools. Reads the hook payload
- * from stdin, runs compliance detection, and on a fresh hit prints a short
- * context injection to stdout for Claude to read.
+ * Claude Code PreToolUse hook for Edit/Write tools. On a fresh detection,
+ * prints a short context injection to stdout for Claude to read. Always
+ * exits 0 — never blocks edits.
  *
- * Wire up by adding a hook entry in `.claude/settings.json` (see
- * templates/.claude/settings.json in this repo).
+ * Wire up via templates/.claude/settings.json.
  */
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
-import { detect, loadProjectConfig, resolveConfig } from "./_compliance-detect.js";
-import { controlsForChange } from "../src/tools/meta.js";
+import {
+  detect,
+  loadProjectConfig,
+  resolveConfig,
+  formatSuggestedControls,
+} from "../src/compliance-detect.js";
+
+const MAX_EXISTING_BYTES = 64 * 1024;
 
 interface HookInput {
   session_id?: string;
@@ -26,12 +31,17 @@ interface HookInput {
   };
 }
 
+function bail(reason: string): never {
+  process.stderr.write(`[compliance] skipped: ${reason}\n`);
+  process.exit(0);
+}
+
 const stdin = await Bun.stdin.text();
 let payload: HookInput;
 try {
   payload = JSON.parse(stdin) as HookInput;
-} catch {
-  process.exit(0);
+} catch (e) {
+  bail(`unparseable hook payload (${e instanceof Error ? e.message : e})`);
 }
 
 const tool = payload.tool_name;
@@ -45,16 +55,17 @@ if (!filePath || !newContent) process.exit(0);
 let existing = "";
 if (existsSync(filePath)) {
   try {
-    existing = await Bun.file(filePath).text();
-  } catch {
-    existing = "";
+    existing = await Bun.file(filePath).slice(0, MAX_EXISTING_BYTES).text();
+  } catch (e) {
+    process.stderr.write(
+      `[compliance] read of ${filePath} failed: ${e instanceof Error ? e.message : e}\n`
+    );
   }
 }
 
 const cfg = resolveConfig(loadProjectConfig(payload.cwd));
 const result = detect(filePath, newContent, existing, cfg);
-if (!result.fired) process.exit(0);
-if (result.hasCitation) process.exit(0);
+if (!result.fired || result.hasCitation) process.exit(0);
 
 const sessionKey =
   payload.session_id ??
@@ -71,23 +82,9 @@ const description = [
   .join(" ")
   .trim();
 
-let suggestions = "";
-try {
-  const checklist = await controlsForChange(description, "2", 5);
-  const nist = checklist.nist_800_53.results
-    .slice(0, 3)
-    .map((c: { id: string }) => c.id)
-    .join(", ");
-  const asvs = checklist.asvs.results
-    .slice(0, 2)
-    .map((c: { id: string }) => c.id)
-    .join(", ");
-  suggestions = [nist && `NIST ${nist}`, asvs && `ASVS ${asvs}`]
-    .filter(Boolean)
-    .join("; ");
-} catch {
-  suggestions = "(run controls_for_change for full detail)";
-}
+const suggestions =
+  (await formatSuggestedControls(description, 3, 2)) ||
+  "(run controls_for_change for full detail)";
 
 const detected = [
   result.reason === "path" && `path: ${result.matchedPaths.join(", ")}`,

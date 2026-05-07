@@ -9,9 +9,16 @@
  *
  * Defaults: target = cwd, output = ./COMPLIANCE.md
  */
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, lstatSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { lookupNistControl } from "../src/tools/nist.js";
+import {
+  REF_LINE_RE,
+  NIST_RE,
+  ASVS_RE,
+} from "../src/compliance-detect.js";
+
+const MAX_FILE_BYTES = 2 * 1024 * 1024;
 
 const args = process.argv.slice(2);
 const target = resolve(args.find((a) => !a.startsWith("--")) ?? ".");
@@ -40,11 +47,6 @@ const TEXT_EXTS = new Set([
   ".sql", ".graphql", ".proto",
 ]);
 
-const REF_LINE_RE =
-  /(?:\/\/|#|--|\/\*|\*)\s*(?:Refs|Compliance):\s*([^\n*]+)/gi;
-const NIST_RE = /\bNIST\s+([A-Z]{2}-\d+(?:\(\d+\))?(?:\.\d+)?)/gi;
-const ASVS_RE = /\bASVS\s+(V\d+(?:\.\d+){0,2})/gi;
-
 interface Hit {
   file: string;
   line: number;
@@ -58,13 +60,15 @@ function* walk(dir: string): Generator<string> {
     const full = join(dir, entry);
     let st;
     try {
-      st = statSync(full);
+      st = lstatSync(full);
     } catch {
       continue;
     }
+    if (st.isSymbolicLink()) continue;
     if (st.isDirectory()) {
       yield* walk(full);
     } else if (st.isFile()) {
+      if (st.size > MAX_FILE_BYTES) continue;
       const dot = entry.lastIndexOf(".");
       const ext = dot === -1 ? "" : entry.slice(dot);
       if (TEXT_EXTS.has(ext)) yield full;

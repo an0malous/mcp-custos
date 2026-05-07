@@ -2,137 +2,474 @@
   "standard": "ISO/IEC 27017:2015",
   "version": "2015",
   "description": "Code of practice for information security controls based on ISO/IEC 27002 for cloud services. Guidance text sourced from NIST SP 800-144, SP 800-210, and SP 800-146 (public domain).",
+  "control_titles_source": {
+    "document": "ISO/IEC 27017:2015, Code of practice for information security controls based on ISO/IEC 27002 for cloud services",
+    "note": "Only control IDs and short titles are reproduced (factual references). Full control text is not redistributed (paywalled standard). NIST cloud guidance references (nist_refs field) are sourced from NIST SP 800-144, SP 800-210 (Table 4), and SP 800-146 — public domain."
+  },
   "sections": [
     {
       "id": "5",
       "name": "Information security policies",
       "controls": [
-        { "id": "5.1.1", "title": "Policies for information security", "nist_refs": ["SP800-144.4.1", "SP800-146.9"] },
-        { "id": "5.1.2", "title": "Review of the policies for information security", "nist_refs": ["SP800-144.4.1", "SP800-144.4.2"] }
+        {
+          "id": "5.1.1",
+          "title": "Policies for information security",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-146.9"
+          ]
+        },
+        {
+          "id": "5.1.2",
+          "title": "Review of the policies for information security",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-144.4.2"
+          ]
+        }
       ]
     },
     {
       "id": "6",
       "name": "Organization of information security",
       "controls": [
-        { "id": "6.1.1", "title": "Information security roles and responsibilities", "nist_refs": ["SP800-144.4.1", "SP800-146.A"] },
-        { "id": "6.1.3", "title": "Contact with authorities", "nist_refs": ["SP800-144.4.2", "SP800-144.4.9"] },
-        { "id": "CLD.6.3.1", "title": "Shared roles and responsibilities within a cloud computing environment", "nist_refs": ["SP800-144.4.1", "SP800-146.A", "SP800-146.9"] }
+        {
+          "id": "6.1.1",
+          "title": "Information security roles and responsibilities",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-146.A"
+          ]
+        },
+        {
+          "id": "6.1.3",
+          "title": "Contact with authorities",
+          "nist_refs": [
+            "SP800-144.4.2",
+            "SP800-144.4.9"
+          ]
+        },
+        {
+          "id": "CLD.6.3.1",
+          "title": "Shared roles and responsibilities within a cloud computing environment",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-146.A",
+            "SP800-146.9"
+          ]
+        }
       ]
     },
     {
       "id": "7",
       "name": "Human resource security",
       "controls": [
-        { "id": "7.2.2", "title": "Information security awareness, education and training", "nist_refs": ["SP800-144.4.1", "SP800-144.4.3"] }
+        {
+          "id": "7.2.2",
+          "title": "Information security awareness, education and training",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-144.4.3"
+          ]
+        }
       ]
     },
     {
       "id": "8",
       "name": "Asset management",
       "controls": [
-        { "id": "8.1.1", "title": "Inventory of assets", "nist_refs": ["SP800-144.4.7", "SP800-146.9"] },
-        { "id": "8.1.3", "title": "Acceptable use of assets", "nist_refs": ["SP800-144.4.1", "SP800-144.4.7"] },
-        { "id": "CLD.8.1.5", "title": "Removal of cloud service customer assets", "nist_refs": ["SP800-144.4.7", "SP800-146.9"] },
-        { "id": "8.2.2", "title": "Labelling of information", "nist_refs": ["SP800-144.4.7", "SP800-210.5.2"] }
+        {
+          "id": "8.1.1",
+          "title": "Inventory of assets",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-146.9"
+          ]
+        },
+        {
+          "id": "8.1.3",
+          "title": "Acceptable use of assets",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-144.4.7"
+          ]
+        },
+        {
+          "id": "CLD.8.1.5",
+          "title": "Removal of cloud service customer assets",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-146.9"
+          ]
+        },
+        {
+          "id": "8.2.2",
+          "title": "Labelling of information",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-210.5.2"
+          ]
+        }
       ]
     },
     {
       "id": "9",
       "name": "Access control",
       "controls": [
-        { "id": "9.1.2", "title": "Access to networks and network services", "nist_refs": ["SP800-210.3.1", "SP800-144.4.4"] },
-        { "id": "9.2.1", "title": "User registration and de-registration", "nist_refs": ["SP800-144.4.5", "SP800-210.5.3"] },
-        { "id": "9.2.2", "title": "User access provisioning", "nist_refs": ["SP800-210.5.5", "SP800-144.4.5"] },
-        { "id": "9.2.4", "title": "Management of secret authentication information of users", "nist_refs": ["SP800-144.4.5"] },
-        { "id": "9.4.1", "title": "Information access restriction", "nist_refs": ["SP800-210.5.1", "SP800-210.5.6", "SP800-210.5.2"] },
-        { "id": "9.4.4", "title": "Use of privileged utility programs", "nist_refs": ["SP800-210.5.3", "SP800-210.3.2"] },
-        { "id": "CLD.9.5.1", "title": "Segregation in virtual computing environments", "nist_refs": ["SP800-210.3.3", "SP800-144.4.6", "SP800-210.5.4"] },
-        { "id": "CLD.9.5.2", "title": "Virtual machine hardening", "nist_refs": ["SP800-210.3.3", "SP800-144.4.6", "SP800-146.7"] }
+        {
+          "id": "9.1.2",
+          "title": "Access to networks and network services",
+          "nist_refs": [
+            "SP800-210.3.1",
+            "SP800-144.4.4"
+          ]
+        },
+        {
+          "id": "9.2.1",
+          "title": "User registration and de-registration",
+          "nist_refs": [
+            "SP800-144.4.5",
+            "SP800-210.5.3"
+          ]
+        },
+        {
+          "id": "9.2.2",
+          "title": "User access provisioning",
+          "nist_refs": [
+            "SP800-210.5.5",
+            "SP800-144.4.5"
+          ]
+        },
+        {
+          "id": "9.2.4",
+          "title": "Management of secret authentication information of users",
+          "nist_refs": [
+            "SP800-144.4.5"
+          ]
+        },
+        {
+          "id": "9.4.1",
+          "title": "Information access restriction",
+          "nist_refs": [
+            "SP800-210.5.1",
+            "SP800-210.5.6",
+            "SP800-210.5.2"
+          ]
+        },
+        {
+          "id": "9.4.4",
+          "title": "Use of privileged utility programs",
+          "nist_refs": [
+            "SP800-210.5.3",
+            "SP800-210.3.2"
+          ]
+        },
+        {
+          "id": "CLD.9.5.1",
+          "title": "Segregation in virtual computing environments",
+          "nist_refs": [
+            "SP800-210.3.3",
+            "SP800-144.4.6",
+            "SP800-210.5.4"
+          ]
+        },
+        {
+          "id": "CLD.9.5.2",
+          "title": "Virtual machine hardening",
+          "nist_refs": [
+            "SP800-210.3.3",
+            "SP800-144.4.6",
+            "SP800-146.7"
+          ]
+        }
       ]
     },
     {
       "id": "10",
       "name": "Cryptography",
       "controls": [
-        { "id": "10.1.1", "title": "Policy on the use of cryptographic controls", "nist_refs": ["SP800-144.4.7", "SP800-144.4.4"] },
-        { "id": "10.1.2", "title": "Key management", "nist_refs": ["SP800-144.4.7", "SP800-146.9"] }
+        {
+          "id": "10.1.1",
+          "title": "Policy on the use of cryptographic controls",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-144.4.4"
+          ]
+        },
+        {
+          "id": "10.1.2",
+          "title": "Key management",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-146.9"
+          ]
+        }
       ]
     },
     {
       "id": "11",
       "name": "Physical and environmental security",
       "controls": [
-        { "id": "11.1.1", "title": "Physical security perimeter", "nist_refs": ["SP800-144.4.4", "SP800-146.7"] },
-        { "id": "11.1.2", "title": "Physical entry controls", "nist_refs": ["SP800-144.4.4", "SP800-144.4.3"] },
-        { "id": "11.2.7", "title": "Secure disposal or reuse of equipment", "nist_refs": ["SP800-144.4.7"] }
+        {
+          "id": "11.1.1",
+          "title": "Physical security perimeter",
+          "nist_refs": [
+            "SP800-144.4.4",
+            "SP800-146.7"
+          ]
+        },
+        {
+          "id": "11.1.2",
+          "title": "Physical entry controls",
+          "nist_refs": [
+            "SP800-144.4.4",
+            "SP800-144.4.3"
+          ]
+        },
+        {
+          "id": "11.2.7",
+          "title": "Secure disposal or reuse of equipment",
+          "nist_refs": [
+            "SP800-144.4.7"
+          ]
+        }
       ]
     },
     {
       "id": "12",
       "name": "Operations security",
       "controls": [
-        { "id": "12.1.2", "title": "Change management", "nist_refs": ["SP800-144.4.1", "SP800-146.9"] },
-        { "id": "12.1.3", "title": "Capacity management", "nist_refs": ["SP800-144.4.8"] },
-        { "id": "12.3.1", "title": "Information backup", "nist_refs": ["SP800-144.4.8", "SP800-144.4.7"] },
-        { "id": "12.4.1", "title": "Event logging", "nist_refs": ["SP800-144.4.9", "SP800-210.3.4"] },
-        { "id": "12.4.3", "title": "Administrator and operator logs", "nist_refs": ["SP800-144.4.9", "SP800-210.3.2"] },
-        { "id": "12.4.4", "title": "Clock synchronisation", "nist_refs": ["SP800-144.4.9"] },
-        { "id": "CLD.12.1.5", "title": "Administrator's operational security", "nist_refs": ["SP800-210.3.2", "SP800-144.4.5", "SP800-210.5.3"] },
-        { "id": "CLD.12.4.5", "title": "Monitoring of cloud services", "nist_refs": ["SP800-144.4.9", "SP800-210.3.4", "SP800-146.9"] }
+        {
+          "id": "12.1.2",
+          "title": "Change management",
+          "nist_refs": [
+            "SP800-144.4.1",
+            "SP800-146.9"
+          ]
+        },
+        {
+          "id": "12.1.3",
+          "title": "Capacity management",
+          "nist_refs": [
+            "SP800-144.4.8"
+          ]
+        },
+        {
+          "id": "12.3.1",
+          "title": "Information backup",
+          "nist_refs": [
+            "SP800-144.4.8",
+            "SP800-144.4.7"
+          ]
+        },
+        {
+          "id": "12.4.1",
+          "title": "Event logging",
+          "nist_refs": [
+            "SP800-144.4.9",
+            "SP800-210.3.4"
+          ]
+        },
+        {
+          "id": "12.4.3",
+          "title": "Administrator and operator logs",
+          "nist_refs": [
+            "SP800-144.4.9",
+            "SP800-210.3.2"
+          ]
+        },
+        {
+          "id": "12.4.4",
+          "title": "Clock synchronisation",
+          "nist_refs": [
+            "SP800-144.4.9"
+          ]
+        },
+        {
+          "id": "CLD.12.1.5",
+          "title": "Administrator's operational security",
+          "nist_refs": [
+            "SP800-210.3.2",
+            "SP800-144.4.5",
+            "SP800-210.5.3"
+          ]
+        },
+        {
+          "id": "CLD.12.4.5",
+          "title": "Monitoring of cloud services",
+          "nist_refs": [
+            "SP800-144.4.9",
+            "SP800-210.3.4",
+            "SP800-146.9"
+          ]
+        }
       ]
     },
     {
       "id": "13",
       "name": "Communications security",
       "controls": [
-        { "id": "13.1.3", "title": "Segregation in networks", "nist_refs": ["SP800-210.3.1", "SP800-144.4.4"] },
-        { "id": "CLD.13.1.4", "title": "Alignment of security management for virtual and physical networks", "nist_refs": ["SP800-210.3.1", "SP800-144.4.4", "SP800-210.6"] }
+        {
+          "id": "13.1.3",
+          "title": "Segregation in networks",
+          "nist_refs": [
+            "SP800-210.3.1",
+            "SP800-144.4.4"
+          ]
+        },
+        {
+          "id": "CLD.13.1.4",
+          "title": "Alignment of security management for virtual and physical networks",
+          "nist_refs": [
+            "SP800-210.3.1",
+            "SP800-144.4.4",
+            "SP800-210.6"
+          ]
+        }
       ]
     },
     {
       "id": "14",
       "name": "System acquisition, development and maintenance",
       "controls": [
-        { "id": "14.1.1", "title": "Information security requirements analysis and specification", "nist_refs": ["SP800-144.4.4", "SP800-146.9", "SP800-146.8"] },
-        { "id": "14.2.1", "title": "Secure development policy", "nist_refs": ["SP800-144.4.4", "SP800-210.5.7"] }
+        {
+          "id": "14.1.1",
+          "title": "Information security requirements analysis and specification",
+          "nist_refs": [
+            "SP800-144.4.4",
+            "SP800-146.9",
+            "SP800-146.8"
+          ]
+        },
+        {
+          "id": "14.2.1",
+          "title": "Secure development policy",
+          "nist_refs": [
+            "SP800-144.4.4",
+            "SP800-210.5.7"
+          ]
+        }
       ]
     },
     {
       "id": "15",
       "name": "Supplier relationships",
       "controls": [
-        { "id": "15.1.1", "title": "Information security policy for supplier relationships", "nist_refs": ["SP800-144.4.3"] },
-        { "id": "15.1.2", "title": "Addressing security within supplier agreements", "nist_refs": ["SP800-144.4.3", "SP800-144.4.2"] },
-        { "id": "15.1.3", "title": "Information and communication technology supply chain", "nist_refs": ["SP800-144.4.3"] }
+        {
+          "id": "15.1.1",
+          "title": "Information security policy for supplier relationships",
+          "nist_refs": [
+            "SP800-144.4.3"
+          ]
+        },
+        {
+          "id": "15.1.2",
+          "title": "Addressing security within supplier agreements",
+          "nist_refs": [
+            "SP800-144.4.3",
+            "SP800-144.4.2"
+          ]
+        },
+        {
+          "id": "15.1.3",
+          "title": "Information and communication technology supply chain",
+          "nist_refs": [
+            "SP800-144.4.3"
+          ]
+        }
       ]
     },
     {
       "id": "16",
       "name": "Information security incident management",
       "controls": [
-        { "id": "16.1.1", "title": "Responsibilities and procedures", "nist_refs": ["SP800-144.4.9", "SP800-146.A"] },
-        { "id": "16.1.2", "title": "Reporting information security events", "nist_refs": ["SP800-144.4.9"] },
-        { "id": "16.1.7", "title": "Collection of evidence", "nist_refs": ["SP800-144.4.9"] }
+        {
+          "id": "16.1.1",
+          "title": "Responsibilities and procedures",
+          "nist_refs": [
+            "SP800-144.4.9",
+            "SP800-146.A"
+          ]
+        },
+        {
+          "id": "16.1.2",
+          "title": "Reporting information security events",
+          "nist_refs": [
+            "SP800-144.4.9"
+          ]
+        },
+        {
+          "id": "16.1.7",
+          "title": "Collection of evidence",
+          "nist_refs": [
+            "SP800-144.4.9"
+          ]
+        }
       ]
     },
     {
       "id": "17",
       "name": "Information security aspects of business continuity management",
       "controls": [
-        { "id": "17.1.1", "title": "Planning information security continuity", "nist_refs": ["SP800-144.4.8", "SP800-146.9"] },
-        { "id": "17.1.2", "title": "Implementing information security continuity", "nist_refs": ["SP800-144.4.8"] },
-        { "id": "17.2.1", "title": "Availability of information processing facilities", "nist_refs": ["SP800-144.4.8"] }
+        {
+          "id": "17.1.1",
+          "title": "Planning information security continuity",
+          "nist_refs": [
+            "SP800-144.4.8",
+            "SP800-146.9"
+          ]
+        },
+        {
+          "id": "17.1.2",
+          "title": "Implementing information security continuity",
+          "nist_refs": [
+            "SP800-144.4.8"
+          ]
+        },
+        {
+          "id": "17.2.1",
+          "title": "Availability of information processing facilities",
+          "nist_refs": [
+            "SP800-144.4.8"
+          ]
+        }
       ]
     },
     {
       "id": "18",
       "name": "Compliance",
       "controls": [
-        { "id": "18.1.1", "title": "Identification of applicable legislation and contractual requirements", "nist_refs": ["SP800-144.4.2", "SP800-146.8"] },
-        { "id": "18.1.3", "title": "Protection of records", "nist_refs": ["SP800-144.4.7", "SP800-144.4.2"] },
-        { "id": "18.1.5", "title": "Regulation of cryptographic controls", "nist_refs": ["SP800-144.4.2"] },
-        { "id": "18.2.1", "title": "Independent review of information security", "nist_refs": ["SP800-144.4.2", "SP800-144.4.3"] }
+        {
+          "id": "18.1.1",
+          "title": "Identification of applicable legislation and contractual requirements",
+          "nist_refs": [
+            "SP800-144.4.2",
+            "SP800-146.8"
+          ]
+        },
+        {
+          "id": "18.1.3",
+          "title": "Protection of records",
+          "nist_refs": [
+            "SP800-144.4.7",
+            "SP800-144.4.2"
+          ]
+        },
+        {
+          "id": "18.1.5",
+          "title": "Regulation of cryptographic controls",
+          "nist_refs": [
+            "SP800-144.4.2"
+          ]
+        },
+        {
+          "id": "18.2.1",
+          "title": "Independent review of information security",
+          "nist_refs": [
+            "SP800-144.4.2",
+            "SP800-144.4.3"
+          ]
+        }
       ]
     }
   ]

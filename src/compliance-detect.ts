@@ -9,6 +9,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { controlsForChange } from "./tools/meta.js";
 
 export const DEFAULT_SECURITY_PATHS = [
   /\bauth(n|z)?\b/,
@@ -92,10 +93,48 @@ export const DEFAULT_SKIP_PATHS = [
   /^CHANGELOG/i,
 ];
 
-const CITATION_PATTERN =
-  /(?:\/\/|#|\/\*|\*)\s*(?:Refs|Compliance):\s*(?:NIST\s+\S+|ASVS\s+V\d)/i;
-const COMMIT_REFS_PATTERN =
-  /^Refs:\s*(?:NIST\s+\S+|ASVS\s+V\d)/im;
+/**
+ * One grammar for "Refs:" / "Compliance:" lines, accepting comment leaders
+ * across every language we ship hooks for: //, #, --, /*, *, plus the bare
+ * "Refs:" form used in commit messages.
+ */
+export const REF_LINE_RE =
+  /(?:^|(?:\/\/|#|--|\/\*|\*))\s*(?:Refs|Compliance):\s*([^\n*]+)/gim;
+export const NIST_RE = /\bNIST\s+([A-Z]{2}-\d+(?:\(\d+\))?(?:\.\d+)?)/gi;
+export const ASVS_RE = /\bASVS\s+(V\d+(?:\.\d+){0,2})/gi;
+
+/** Single-shot detector — true if any valid Refs/Compliance line is present. */
+export function hasCitation(content: string): boolean {
+  for (const m of content.matchAll(REF_LINE_RE)) {
+    const body = m[1] ?? "";
+    if (NIST_RE.test(body)) {
+      NIST_RE.lastIndex = 0;
+      return true;
+    }
+    NIST_RE.lastIndex = 0;
+    if (ASVS_RE.test(body)) {
+      ASVS_RE.lastIndex = 0;
+      return true;
+    }
+    ASVS_RE.lastIndex = 0;
+  }
+  return false;
+}
+
+/** Pull every NIST and ASVS id out of arbitrary text. */
+export function extractCitations(content: string): {
+  nist: string[];
+  asvs: string[];
+} {
+  const nist: string[] = [];
+  const asvs: string[] = [];
+  for (const m of content.matchAll(REF_LINE_RE)) {
+    const body = m[1] ?? "";
+    for (const n of body.matchAll(NIST_RE)) nist.push(n[1]);
+    for (const a of body.matchAll(ASVS_RE)) asvs.push(a[1]);
+  }
+  return { nist, asvs };
+}
 
 export interface ProjectConfig {
   add_paths?: string[];
@@ -123,7 +162,10 @@ export function loadProjectConfig(cwd: string = process.cwd()): ProjectConfig {
   if (!existsSync(path)) return {};
   try {
     return JSON.parse(readFileSync(path, "utf8")) as ProjectConfig;
-  } catch {
+  } catch (e) {
+    process.stderr.write(
+      `[compliance] failed to parse ${path}: ${e instanceof Error ? e.message : e} — using defaults\n`
+    );
     return {};
   }
 }
@@ -184,8 +226,35 @@ export function findKeywords(content: string, cfg?: ResolvedConfig): string[] {
   return found;
 }
 
-export function hasCitation(content: string): boolean {
-  return CITATION_PATTERN.test(content) || COMMIT_REFS_PATTERN.test(content);
+/**
+ * Format a one-line "Suggested controls: NIST X, Y, Z; ASVS V1, V2" string
+ * for hook output. Returns an empty string on failure or no matches —
+ * never throws — so hook callers can render it unconditionally.
+ */
+export async function formatSuggestedControls(
+  description: string,
+  nistN: number = 3,
+  asvsN: number = 2
+): Promise<string> {
+  try {
+    const r = await controlsForChange(description, "2", Math.max(nistN, asvsN));
+    const nist = r.nist_800_53.results
+      .slice(0, nistN)
+      .map((c) => c.id)
+      .join(", ");
+    const asvs = r.asvs.results
+      .slice(0, asvsN)
+      .map((c) => c.id)
+      .join(", ");
+    return [nist && `NIST ${nist}`, asvs && `ASVS ${asvs}`]
+      .filter(Boolean)
+      .join("; ");
+  } catch (e) {
+    process.stderr.write(
+      `[compliance] suggestion lookup failed: ${e instanceof Error ? e.message : e}\n`
+    );
+    return "";
+  }
 }
 
 export function pathDomain(path: string): string | null {

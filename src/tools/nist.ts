@@ -84,7 +84,7 @@ export async function listNistFamily(
   return family.controls.map(summarize);
 }
 
-export async function listNistFamilies(): Promise<object[]> {
+export async function listNistFamilies() {
   const d = await load();
   return d.families.map((f) => ({
     id: f.id,

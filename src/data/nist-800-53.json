@@ -2,6 +2,8 @@
   "standard": "NIST SP 800-53",
   "version": "5.2.0",
   "last_modified": "2025-08-26T14:33:16.00000-00:00",
+  "source": "https://raw.githubusercontent.com/usnistgov/oscal-content/main/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog-min.json",
+  "source_repo": "https://github.com/usnistgov/oscal-content",
   "families": [
     {
       "id": "AC",

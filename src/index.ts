@@ -54,7 +54,7 @@ import { json, text } from "./tools/_shared.js";
 const server = new McpServer(
   {
     name: "mcp-security-compliance",
-    version: "0.1.0",
+    version: "0.2.1",
   },
   {
     instructions: `Authoritative compliance and secure-development reference data: ISO 27001:2022, NIST SP 800-53 Rev 5, OWASP ASVS 5.0, NIST SSDF (SP 800-218), ISO 27017:2015, NIST cloud guidance (SP 800-144/210/146).
@@ -131,7 +131,7 @@ server.tool(
       return text(`Category ${category_id} not found.`);
     }
     const summary = controls
-      .map((c: any) => `${c.id} - ${c.title} → NIST: ${c.nist_mappings.join(", ")}`)
+      .map((c) => `${c.id} - ${c.title} → NIST: ${c.nist_mappings.join(", ")}`)
       .join("\n");
     return text(summary);
   }
@@ -212,7 +212,7 @@ server.tool(
   async () => {
     const families = await listNistFamilies();
     const summary = families
-      .map((f: any) => `${f.id} - ${f.name} (${f.control_count} controls)`)
+      .map((f) => `${f.id} - ${f.name} (${f.control_count} controls)`)
       .join("\n");
     return text(summary);
   }
@@ -266,7 +266,7 @@ server.tool(
       return text(`Section ${section_id} not found.`);
     }
     const summary = controls
-      .map((c: any) => `${c.id} - ${c.title}`)
+      .map((c) => `${c.id} - ${c.title}`)
       .join("\n");
     return text(summary);
   }
