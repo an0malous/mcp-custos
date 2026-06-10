@@ -51,9 +51,19 @@ describe("path detection", () => {
     ["src/oauth/callback.ts", "oauth"],
     ["src/session/store.ts", "session"],
     ["src/tls/cert.ts", "tls"],
+    // key material maps to crypto (previously resolved to null)
+    ["src/keys/rotate.ts", "crypto"],
+    ["src/api-key/issue.ts", "crypto"],
     ["src/utils/format.ts", null],
   ])("%s → domain: %p", (path, expected) => {
     expect(pathDomain(path)).toBe(expected);
+  });
+
+  test.each([
+    ["src/keys/rotate.ts", true],
+    ["src/utils/format.ts", false],
+  ])("%s → firing unchanged by domain mapping: %p", (path, expected) => {
+    expect(pathIsSecurity(path)).toBe(expected);
   });
 });
 
