@@ -4,6 +4,8 @@ import {
   flagFileName,
   isSuppressed,
   resolveTtlMs,
+  conciseLabel,
+  concernQuery,
   DEFAULT_SUPPRESS_TTL_MS,
 } from "./nudge-suppression.js";
 
@@ -99,5 +101,50 @@ describe("resolveTtlMs", () => {
     expect(resolveTtlMs("abc")).toBe(DEFAULT_SUPPRESS_TTL_MS);
     expect(resolveTtlMs("0")).toBe(DEFAULT_SUPPRESS_TTL_MS);
     expect(resolveTtlMs("-5")).toBe(DEFAULT_SUPPRESS_TTL_MS);
+  });
+});
+
+describe("conciseLabel", () => {
+  test("strips the keyword prefix", () => {
+    expect(conciseLabel("kw:bcrypt")).toBe("bcrypt");
+  });
+
+  test("strips the domain prefix", () => {
+    expect(conciseLabel("domain:auth")).toBe("auth");
+  });
+
+  test("leaves an unprefixed fallback token unchanged", () => {
+    expect(conciseLabel("path")).toBe("path");
+  });
+});
+
+describe("concernQuery", () => {
+  test("combines label, domain, and a path hint into a word query", () => {
+    const q = concernQuery("kw:bcrypt", { domain: "auth", pathHint: "login.ts" });
+    expect(q).toBe("bcrypt auth login");
+  });
+
+  test("drops the file extension from the path hint", () => {
+    const q = concernQuery("kw:password", { domain: null, pathHint: "reset.tsx" });
+    expect(q).toBe("password reset");
+  });
+
+  test("splits multi-word labels and de-duplicates case-insensitively", () => {
+    const q = concernQuery("kw:private_key", { domain: "secrets", pathHint: "KEY.ts" });
+    // "private_key" → "private key"; "KEY" de-dupes against "key".
+    expect(q).toBe("private key secrets");
+  });
+
+  test("degrades to the label alone when no context is present", () => {
+    expect(concernQuery("kw:oauth", { domain: null, pathHint: null })).toBe("oauth");
+  });
+
+  test("degrades to the label alone with an empty context object", () => {
+    expect(concernQuery("kw:oauth", {})).toBe("oauth");
+  });
+
+  test("strips compound file extensions from the path hint", () => {
+    const q = concernQuery("kw:bcrypt", { domain: "auth", pathHint: "login.test.ts" });
+    expect(q).toBe("bcrypt auth login");
   });
 });

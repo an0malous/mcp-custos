@@ -83,3 +83,34 @@ export function resolveTtlMs(envValue: string | undefined): number {
   if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_SUPPRESS_TTL_MS;
   return parsed;
 }
+
+/** Strip the kind prefix from a concern token for display (e.g. "kw:bcrypt" → "bcrypt"). */
+export function conciseLabel(token: string): string {
+  return token.replace(/^domain:/, "").replace(/^kw:/, "");
+}
+
+/**
+ * Build a context-rich retrieval query for a concern: the concise label
+ * combined with available detection context (domain and a path hint, e.g. a
+ * filename), so a bare keyword is queried with surrounding context instead of
+ * alone. The result is split into words, de-duplicated case-insensitively,
+ * and space-joined; with no usable context it degrades to the label's words.
+ */
+export function concernQuery(
+  token: string,
+  context: { domain?: string | null; pathHint?: string | null }
+): string {
+  // Drop trailing file extension(s) from the path hint so "login.ts" → "login"
+  // and "login.test.ts" → "login" (compound extensions don't leak noise words).
+  const hint = (context.pathHint ?? "").replace(/(\.[A-Za-z0-9]+)+$/, "");
+  const seen = new Set<string>();
+  return [conciseLabel(token), context.domain ?? "", hint]
+    .flatMap((part) => part.split(/[^A-Za-z0-9]+/))
+    .map((word) => word.trim())
+    .filter((word) => word.length > 0)
+    .filter((word) => {
+      const key = word.toLowerCase();
+      return seen.has(key) ? false : seen.add(key);
+    })
+    .join(" ");
+}

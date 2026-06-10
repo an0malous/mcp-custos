@@ -10,6 +10,7 @@
  *   COMPLIANCE_BASE=origin/main bun run ... --strict       # CI mode
  */
 import { spawnSync } from "node:child_process";
+import { basename } from "node:path";
 import {
   detect,
   hasCitation,
@@ -17,6 +18,11 @@ import {
   resolveConfig,
   formatSuggestedControls,
 } from "../src/compliance-detect.js";
+import {
+  concernTokens,
+  concernQuery,
+  conciseLabel,
+} from "../src/nudge-suppression.js";
 import { parseAddedByFile } from "../src/diff-utils.js";
 
 const STRICT = process.argv.includes("--strict");
@@ -60,24 +66,53 @@ interface Hit {
   path: string;
   reason: "path" | "keyword";
   matchedKeywords: string[];
+  domain: string | null;
 }
 const hits: Hit[] = [];
 for (const [path, added] of blocks) {
   const r = detect(path, added, undefined, cfg);
   if (!r.fired || r.hasCitation || commitHasCitation) continue;
-  hits.push({ path, reason: r.reason!, matchedKeywords: r.matchedKeywords });
+  hits.push({
+    path,
+    reason: r.reason!,
+    matchedKeywords: r.matchedKeywords,
+    domain: r.domain,
+  });
 }
 
 if (hits.length === 0) process.exit(0);
 
-const description = [
-  hits.map((h) => h.path).join(" "),
-  Array.from(new Set(hits.flatMap((h) => h.matchedKeywords))).join(" "),
-]
-  .filter(Boolean)
-  .join(" ");
+// Derive de-duplicated concern identities across all flagged changes, keeping
+// the first context (domain + path hint) seen for each, so the gate's guidance
+// is per concern rather than one blended query.
+const concernContext = new Map<string, { domain: string | null; pathHint: string }>();
+for (const h of hits) {
+  for (const token of concernTokens(h)) {
+    if (!concernContext.has(token)) {
+      concernContext.set(token, { domain: h.domain, pathHint: basename(h.path) });
+    }
+  }
+}
+const MAX_RENDERED = 8;
+const allConcerns = Array.from(concernContext.keys());
+const rendered = allConcerns.slice(0, MAX_RENDERED);
+const overflow = allConcerns.length - rendered.length;
 
-const suggestion = await formatSuggestedControls(description, 3, 2);
+const suggestionLines = await Promise.all(
+  rendered.map(async (token) => {
+    const ctx = concernContext.get(token)!;
+    let detail = "";
+    try {
+      detail = await formatSuggestedControls(concernQuery(token, ctx), 2, 1);
+    } catch {
+      detail = "";
+    }
+    return `    - ${conciseLabel(token)} → ${detail || "(run controls_for_change for full detail)"}`;
+  })
+);
+if (overflow > 0) {
+  suggestionLines.push(`    - (+${overflow} more — run controls_for_change)`);
+}
 
 const lines: string[] = [];
 lines.push("[compliance-check] Security-touching changes without citation:");
@@ -88,9 +123,10 @@ for (const h of hits) {
       : `keywords: ${h.matchedKeywords.join(", ")}`;
   lines.push(`  - ${h.path} (${det})`);
 }
-if (suggestion) {
+if (suggestionLines.length > 0) {
   lines.push("");
-  lines.push(`  Suggested controls: ${suggestion}`);
+  lines.push("  Suggested controls:");
+  lines.push(...suggestionLines);
 }
 lines.push("");
 lines.push(

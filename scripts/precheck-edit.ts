@@ -8,7 +8,7 @@
  */
 import { existsSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, basename } from "node:path";
 import { createHash } from "node:crypto";
 import {
   detect,
@@ -21,6 +21,8 @@ import {
   flagFileName,
   isSuppressed,
   resolveTtlMs,
+  conciseLabel,
+  concernQuery,
 } from "../src/nudge-suppression.js";
 
 const MAX_EXISTING_BYTES = 64 * 1024;
@@ -112,15 +114,16 @@ try {
   const rendered = surfaced.slice(0, MAX_RENDERED);
   const overflow = surfaced.length - rendered.length;
 
-  const conciseLabel = (token: string) =>
-    token.replace(/^domain:/, "").replace(/^kw:/, "");
-
+  const pathHint = basename(filePath);
   const suggestionLines = await Promise.all(
     rendered.map(async (token) => {
       const label = conciseLabel(token);
+      // Query with surrounding detection context so a bare keyword still
+      // returns relevant controls rather than degrading to the fallback.
+      const query = concernQuery(token, { domain: result.domain, pathHint });
       let detail = "";
       try {
-        detail = await formatSuggestedControls(label, 2, 1);
+        detail = await formatSuggestedControls(query, 2, 1);
       } catch {
         detail = "";
       }

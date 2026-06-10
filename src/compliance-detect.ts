@@ -261,7 +261,10 @@ export function pathDomain(path: string): string | null {
   const lower = path.toLowerCase();
   if (/\bauth(n|z)?\b|\bauthentication\b|\bauthorization\b/.test(lower))
     return "auth";
-  if (/\bcrypto|cipher\b/.test(lower)) return "crypto";
+  // `keys?` is the one DEFAULT_SECURITY_PATHS pattern with no domain case;
+  // key material is cryptographic, so group it with crypto. `\bcrypto` is left
+  // open-ended on purpose so "cryptography" paths still map here.
+  if (/\bcrypto|\bcipher\b|\bkeys?\b/.test(lower)) return "crypto";
   if (/\bsecrets?\b|\bvault\b|\bkms\b/.test(lower)) return "secrets";
   if (/\biam\b|\bidentity\b/.test(lower)) return "iam";
   if (/\boauth|oidc|saml\b/.test(lower)) return "oauth";
