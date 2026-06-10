@@ -1,7 +1,6 @@
 /**
  * Shared OSCAL parsing primitives for NIST 800-53 and NIST SSDF catalogs.
- * Imported by parse-oscal.ts, parse-ssdf.ts, and update-sources.ts so the
- * three paths can never diverge.
+ * Imported by update-sources.ts for the catalog refresh.
  */
 
 export interface OscalPart {
