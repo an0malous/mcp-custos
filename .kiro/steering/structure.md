@@ -13,7 +13,7 @@ Layered by concern: an MCP entrypoint wires a set of single-responsibility **too
 
 ### Tool modules
 **Location**: `src/tools/`
-**Purpose**: One module per framework or capability — `asvs.ts`, `nist.ts`, `cwe.ts`, `ssdf.ts`, `cloud.ts`, `nist-cloud.ts`, `inventory.ts`, `pr-summary.ts`, `controls.ts`, `meta.ts`. Shared helpers in `_shared.ts`.
+**Purpose**: One module per framework or capability; the module name matches the MCP tool family it exposes (e.g. ASVS tools live in `asvs.ts`). Shared cross-tool helpers are prefixed with `_` (`_shared.ts`).
 **Example**: `controls.ts` implements `controls_for_change`; `meta.ts` exposes `controlsForChange()` for reuse by scripts.
 
 ### Authoritative data
@@ -23,7 +23,7 @@ Layered by concern: an MCP entrypoint wires a set of single-responsibility **too
 
 ### Scripts (CLI / hooks)
 **Location**: `scripts/`
-**Purpose**: Standalone entrypoints that reuse `src/` modules — `precheck-edit.ts` (Claude Code PreToolUse hook), `check-compliance-citations.ts` (pre-commit), `generate-evidence-index.ts`, `update-sources.ts`, `verify-iso-controls.ts`, `init.ts`.
+**Purpose**: Standalone entrypoints that reuse `src/` modules. The two architecture-significant ones are the hooks — `precheck-edit.ts` (Claude Code PreToolUse) and `check-compliance-citations.ts` (pre-commit) — which share detection logic; the rest handle dataset refresh, evidence generation, ISO verification, and setup.
 **Example**: `precheck-edit.ts` and `check-compliance-citations.ts` both import `src/compliance-detect.ts` so hook and gate share one detection grammar.
 
 ### Shared detection

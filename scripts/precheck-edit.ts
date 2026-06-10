@@ -6,7 +6,7 @@
  *
  * Wire up via templates/.claude/settings.json.
  */
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
@@ -16,6 +16,12 @@ import {
   resolveConfig,
   formatSuggestedControls,
 } from "../src/compliance-detect.js";
+import {
+  concernTokens,
+  flagFileName,
+  isSuppressed,
+  resolveTtlMs,
+} from "../src/nudge-suppression.js";
 
 const MAX_EXISTING_BYTES = 64 * 1024;
 
@@ -63,44 +69,89 @@ if (existsSync(filePath)) {
   }
 }
 
-const cfg = resolveConfig(loadProjectConfig(payload.cwd));
-const result = detect(filePath, newContent, existing, cfg);
-if (!result.fired || result.hasCitation) process.exit(0);
+// Everything past payload parsing is wrapped so any unexpected error
+// (regex, fs, retrieval) fails open: log to stderr and still exit 0, never
+// blocking the edit or surfacing an error to the hook caller.
+try {
+  const cfg = resolveConfig(loadProjectConfig(payload.cwd));
+  const result = detect(filePath, newContent, existing, cfg);
+  if (!result.fired || result.hasCitation) process.exit(0);
 
-const sessionKey =
-  payload.session_id ??
-  createHash("sha1").update(payload.cwd ?? "").digest("hex").slice(0, 12);
-const domain = result.domain ?? "keyword";
-const flagPath = join(tmpdir(), `.compliance-${sessionKey}-${domain}.flag`);
-if (existsSync(flagPath)) process.exit(0);
+  const sessionKey =
+    payload.session_id ??
+    createHash("sha1").update(payload.cwd ?? "").digest("hex").slice(0, 12);
 
-const description = [
-  result.matchedPaths.join(" "),
-  result.matchedKeywords.join(" "),
-]
-  .filter(Boolean)
-  .join(" ")
-  .trim();
+  // Suppression is keyed per concern (domain + each keyword), not per path
+  // domain, so a later edit raising a *new* concern re-notifies instead of
+  // being swallowed. Each concern's marker also expires after a window, so a
+  // long session gets occasional reminders rather than permanent silence.
+  const ttlMs = resolveTtlMs(process.env.COMPLIANCE_NUDGE_TTL_MS);
+  const now = Date.now();
 
-const suggestions =
-  (await formatSuggestedControls(description, 3, 2)) ||
-  "(run controls_for_change for full detail)";
+  const flagPathFor = (token: string) =>
+    join(tmpdir(), flagFileName(sessionKey, token));
 
-const detected = [
-  result.reason === "path" && `path: ${result.matchedPaths.join(", ")}`,
-  result.matchedKeywords.length > 0 &&
-    `keywords: ${result.matchedKeywords.slice(0, 4).join(", ")}`,
-]
-  .filter(Boolean)
-  .join("; ");
+  const markerMtimeMs = (token: string): number | null => {
+    try {
+      return statSync(flagPathFor(token)).mtimeMs;
+    } catch {
+      return null; // missing/unreadable → treat as not suppressed
+    }
+  };
 
-const message = [
-  `[compliance] ${filePath} edit detected.`,
-  `Detected ${detected}.`,
-  `Likely controls: ${suggestions}.`,
-  `If already cited in this file or PR, ignore. Otherwise add a "// Refs: NIST <id>" line in the change.`,
-].join("\n");
+  // Surface only concerns that are new or whose prior nudge has expired.
+  const tokens = concernTokens(result);
+  const surfaced = tokens.filter(
+    (t) => !isSuppressed(markerMtimeMs(t), now, ttlMs)
+  );
+  if (surfaced.length === 0) process.exit(0);
 
-await Bun.write(flagPath, "");
-console.log(message);
+  // Per-concern suggestions, grouped so each surfaced concern is represented.
+  // Capped to keep the message a glanceable nudge.
+  const MAX_RENDERED = 5;
+  const rendered = surfaced.slice(0, MAX_RENDERED);
+  const overflow = surfaced.length - rendered.length;
+
+  const conciseLabel = (token: string) =>
+    token.replace(/^domain:/, "").replace(/^kw:/, "");
+
+  const suggestionLines = await Promise.all(
+    rendered.map(async (token) => {
+      const label = conciseLabel(token);
+      let detail = "";
+      try {
+        detail = await formatSuggestedControls(label, 2, 1);
+      } catch {
+        detail = "";
+      }
+      return `  - ${label} → ${detail || "(run controls_for_change for full detail)"}`;
+    })
+  );
+  if (overflow > 0) {
+    suggestionLines.push(`  - (+${overflow} more — run controls_for_change)`);
+  }
+
+  const message = [
+    `[compliance] ${filePath} edit detected.`,
+    `Detected concerns: ${surfaced.map(conciseLabel).join(", ")}.`,
+    `Likely controls:`,
+    ...suggestionLines,
+    `If already cited in this file or PR, ignore. Otherwise add a "// Refs: NIST <id>" line in the change.`,
+  ].join("\n");
+
+  // Refresh a marker per surfaced concern (best-effort; failures don't block).
+  for (const token of surfaced) {
+    try {
+      await Bun.write(flagPathFor(token), "");
+    } catch {
+      // ignore — suppression is best-effort, never blocks the edit
+    }
+  }
+
+  console.log(message);
+} catch (e) {
+  process.stderr.write(
+    `[compliance] unexpected error: ${e instanceof Error ? e.message : e}\n`
+  );
+}
 process.exit(0);

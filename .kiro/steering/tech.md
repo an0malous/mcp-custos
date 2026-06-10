@@ -8,7 +8,7 @@ A single MCP (Model Context Protocol) server process exposes compliance referenc
 
 - **Language**: TypeScript (strict, ESM — `"type": "module"`)
 - **Runtime**: Bun
-- **Protocol/SDK**: `@modelcontextprotocol/sdk` (^1.12.x)
+- **Protocol/SDK**: `@modelcontextprotocol/sdk` (^1.12.1)
 
 ## Key Libraries
 
