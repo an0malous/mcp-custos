@@ -153,9 +153,11 @@ server.tool(
 
 server.tool(
   "nist_lookup_control",
-  "Look up a NIST 800-53 control by ID. Returns summary by default, set detailed=true for full guidance and enhancements.",
+  "Look up a NIST 800-53 control or enhancement by ID. Accepts citation form IA-5(1) and OSCAL form IA-5.1. Returns summary by default, set detailed=true for full guidance and enhancements.",
   {
-    control_id: z.string().describe("Control ID, e.g. AC-1, SC-8, IA-2"),
+    control_id: z
+      .string()
+      .describe("Control or enhancement ID, e.g. AC-1, SC-8, IA-5(1), IA-5.1"),
     detailed: z
       .boolean()
       .default(false)

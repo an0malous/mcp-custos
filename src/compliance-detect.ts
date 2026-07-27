@@ -240,7 +240,7 @@ export async function formatSuggestedControls(
     const r = await controlsForChange(description, "2", Math.max(nistN, asvsN));
     const nist = r.nist_800_53.results
       .slice(0, nistN)
-      .map((c) => c.id)
+      .map((c) => c.cite_as)
       .join(", ");
     const asvs = r.asvs.results
       .slice(0, asvsN)
