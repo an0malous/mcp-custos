@@ -73,6 +73,16 @@ const SYNONYMS: Record<string, string> = {
   iast: "interactive application security testing",
   sca: "software composition analysis",
   rasp: "runtime application self protection",
+  // Password-hashing mechanisms: the frameworks never name algorithms, so
+  // expand to the storage vocabulary they do use (NIST IA-5(1) "salted key
+  // derivation function", ASVS V6.x "password storage/verifier").
+  bcrypt: "password hashing storage salted key derivation",
+  argon2: "password hashing storage salted key derivation",
+  scrypt: "password hashing storage salted key derivation",
+  pbkdf2: "password hashing storage salted key derivation",
+  // Vocabulary bridge: engineers say "authorization"; NIST names the same
+  // concept "access enforcement" (AC-3) and "least privilege" (AC-6).
+  authorization: "access enforcement least privilege",
 };
 
 function expandSynonyms(text: string): string {
@@ -93,24 +103,68 @@ export function tokenize(description: string): string[] {
   );
 }
 
+/**
+ * Per-token searches use this internal limit so the tally sees the complete
+ * match set — slicing to the display limit happens only after scoring.
+ * Truncating per token would bias results toward whatever sorts early in the
+ * source catalog (e.g. the AC family in NIST).
+ */
+const TALLY_LIMIT = 500;
+
+/**
+ * Reduce a token to a substring-friendly stem so inflections match ("validate"
+ * → "validat" matches "validation"; "checks" → "check"). One conservative
+ * suffix strip, longest first, only when a ≥4-char stem remains — the stem is
+ * always a prefix of the original token, so direct occurrences still match.
+ */
+export function searchStem(token: string): string {
+  for (const suffix of ["ing", "ed", "es", "s", "e"]) {
+    if (
+      token.endsWith(suffix) &&
+      token.length - suffix.length >= 4 &&
+      !(suffix === "s" && token.endsWith("ss"))
+    ) {
+      return token.slice(0, token.length - suffix.length);
+    }
+  }
+  return token;
+}
+
 async function tokenScored<T extends { id: string }>(
   tokens: string[],
-  runner: (q: string) => Promise<{ results: T[] }>,
+  runner: (q: string) => Promise<{ total: number; results: T[] }>,
   limit: number
 ): Promise<Array<T & { match_score: number }>> {
   const perToken = await Promise.all(tokens.map(runner));
-  const tally = new Map<string, { hits: number; item: T }>();
+  const tally = new Map<
+    string,
+    { score: number; distinct: number; item: T }
+  >();
   for (const r of perToken) {
+    // IDF-style selectivity: a token matching 344 entries says far less about
+    // any one of them than a token matching 15. log keeps broad tokens
+    // contributing something so short queries still rank.
+    const weight = 1 / Math.log2(2 + r.total);
     for (const item of r.results) {
       const prev = tally.get(item.id);
-      if (prev) prev.hits += 1;
-      else tally.set(item.id, { hits: 1, item });
+      if (prev) {
+        prev.score += weight;
+        prev.distinct += 1;
+      } else tally.set(item.id, { score: weight, distinct: 1, item });
     }
   }
   return Array.from(tally.values())
-    .sort((a, b) => b.hits - a.hits)
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        b.distinct - a.distinct ||
+        a.item.id.localeCompare(b.item.id)
+    )
     .slice(0, limit)
-    .map((x) => ({ ...x.item, match_score: x.hits }));
+    .map((x) => ({
+      ...x.item,
+      match_score: Math.round(x.score * 1000) / 1000,
+    }));
 }
 
 export async function controlsForChange(
@@ -119,11 +173,23 @@ export async function controlsForChange(
   perSourceLimit: number = 10
 ) {
   const tokens = tokenize(description);
+  // Search on de-duplicated stems ("validate" and "validation" become one
+  // signal instead of double-counting); tokens_used reports the readable
+  // originals.
+  const stems = Array.from(new Set(tokens.map(searchStem)));
 
   const [asvs, ssdf, nist] = await Promise.all([
-    tokenScored(tokens, (q) => searchAsvs(q, asvsLevel, 50), perSourceLimit),
-    tokenScored(tokens, (q) => searchSsdf(q, 50), perSourceLimit),
-    tokenScored(tokens, (q) => searchNistControls(q, 50), perSourceLimit),
+    tokenScored(
+      stems,
+      (q) => searchAsvs(q, asvsLevel, TALLY_LIMIT),
+      perSourceLimit
+    ),
+    tokenScored(stems, (q) => searchSsdf(q, TALLY_LIMIT), perSourceLimit),
+    tokenScored(
+      stems,
+      (q) => searchNistControls(q, TALLY_LIMIT),
+      perSourceLimit
+    ),
   ]);
 
   return {
