@@ -10,6 +10,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { controlsForChange } from "./tools/meta.js";
+import { lookupCwe } from "./tools/cwe.js";
 
 export const DEFAULT_SECURITY_PATHS = [
   /\bauth(n|z)?\b/,
@@ -255,6 +256,120 @@ export async function formatSuggestedControls(
     );
     return "";
   }
+}
+
+/**
+ * Project-curated concern→weakness association (not an official crosswalk).
+ * Keys are lowercase concise concern labels (domains and high-confidence
+ * keywords from the default detection grammar). Concerns with no clearly
+ * corresponding weakness are omitted on purpose — an absent key means "no
+ * mitigation hint", never a guess. CWE-347 (JWT) currently ships no
+ * mitigations upstream; it stays mapped so hints appear if MITRE adds them.
+ */
+export const CONCERN_CWES: Record<string, string> = {
+  // detection domains
+  auth: "CWE-287",
+  crypto: "CWE-327",
+  secrets: "CWE-798",
+  iam: "CWE-269",
+  oauth: "CWE-287",
+  session: "CWE-613",
+  tls: "CWE-319",
+  // high-confidence keywords
+  password: "CWE-521",
+  passwd: "CWE-521",
+  bcrypt: "CWE-916",
+  argon2: "CWE-916",
+  scrypt: "CWE-916",
+  pbkdf2: "CWE-916",
+  jsonwebtoken: "CWE-347",
+  jwt: "CWE-347",
+  oidc: "CWE-287",
+  openid: "CWE-287",
+  passkey: "CWE-287",
+  webauthn: "CWE-287",
+  fido: "CWE-287",
+  csrf: "CWE-352",
+  xsrf: "CWE-352",
+  xss: "CWE-79",
+  private_key: "CWE-798",
+  secret_key: "CWE-798",
+  api_key: "CWE-798",
+  apikey: "CWE-798",
+  mfa: "CWE-308",
+  totp: "CWE-308",
+  "x.509": "CWE-295",
+  x509: "CWE-295",
+};
+
+const MITIGATION_HINT_MAX = 220;
+
+function conciseLabelOf(token: string): string {
+  return token.replace(/^domain:/, "").replace(/^kw:/, "");
+}
+
+function truncateHint(text: string): string {
+  const flat = text.replace(/\s+/g, " ").trim();
+  if (flat.length <= MITIGATION_HINT_MAX) return flat;
+  // Prefer a sentence boundary inside the window; hard-cut with ellipsis otherwise.
+  const window = flat.slice(0, MITIGATION_HINT_MAX);
+  const sentenceEnd = window.lastIndexOf(". ");
+  if (sentenceEnd > MITIGATION_HINT_MAX / 2)
+    return window.slice(0, sentenceEnd + 1);
+  return `${window.trimEnd()}…`;
+}
+
+/**
+ * One-line official mitigation for a concern: "CWE-916: <verbatim MITRE
+ * mitigation, truncated>". Prefers implementation-phase mitigations, then
+ * architecture-phase, then the first available. Returns "" for unmapped
+ * concerns, mitigation-less weaknesses, or any retrieval failure — callers
+ * render the base suggestion line unchanged in that case.
+ */
+export async function mitigationHint(token: string): Promise<string> {
+  try {
+    const cweId = CONCERN_CWES[conciseLabelOf(token).toLowerCase()];
+    if (!cweId) return "";
+    const w = (await lookupCwe(cweId, true)) as {
+      potential_mitigations?: Array<{ phase?: string; description: string }>;
+    } | null;
+    const mitigations = (w?.potential_mitigations ?? []).filter(
+      (m) => m.description.length > 0
+    );
+    if (mitigations.length === 0) return "";
+    const pick =
+      mitigations.find((m) => m.phase?.includes("Implementation")) ??
+      mitigations.find((m) => m.phase?.includes("Architecture and Design")) ??
+      mitigations[0];
+    return `${cweId}: ${truncateHint(pick.description)}`;
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Shared per-concern guidance line(s) for both hooks: the control-suggestion
+ * line, plus an indented official mitigation line when one is available.
+ * `query` is the retrieval query the caller builds via concernQuery();
+ * `indent` is the hook's bullet indentation (nudge "  ", gate "    ").
+ */
+export async function formatConcernLine(
+  token: string,
+  query: string,
+  indent: string = "  "
+): Promise<string> {
+  let detail = "";
+  try {
+    detail = await formatSuggestedControls(query, 2, 1);
+  } catch {
+    detail = "";
+  }
+  const lines = [
+    `${indent}- ${conciseLabelOf(token)} → ${detail || "(run controls_for_change for full detail)"}`,
+  ];
+  const mitigation = await mitigationHint(token);
+  if (mitigation) lines.push(`${indent}    ↳ ${mitigation}`);
+  return lines.join("\n");
 }
 
 export function pathDomain(path: string): string | null {

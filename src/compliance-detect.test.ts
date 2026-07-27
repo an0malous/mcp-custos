@@ -8,7 +8,11 @@ import {
   hasCitation,
   extractCitations,
   resolveConfig,
+  CONCERN_CWES,
+  mitigationHint,
+  formatConcernLine,
 } from "./compliance-detect.js";
+import { lookupCwe } from "./tools/cwe.js";
 
 describe("path detection", () => {
   test.each([
@@ -237,5 +241,68 @@ describe("project config overrides", () => {
     const cfg = resolveConfig({ replace_paths: ["billing"] });
     const r = detect("src/auth/login.ts", "x", undefined, cfg);
     expect(r.fired).toBe(false); // auth no longer in path list
+  });
+});
+
+describe("mitigation hints (hook-mitigation-surfacing)", () => {
+  test("every mapped CWE exists in the bundled corpus", async () => {
+    for (const cweId of new Set(Object.values(CONCERN_CWES))) {
+      expect(await lookupCwe(cweId)).not.toBeNull();
+    }
+  });
+
+  test("all default detection domains are mapped", () => {
+    for (const domain of ["auth", "crypto", "secrets", "iam", "oauth", "session", "tls"]) {
+      expect(CONCERN_CWES[domain]).toBeDefined();
+    }
+  });
+
+  test("domain token yields an attributed, bounded hint", async () => {
+    const hint = await mitigationHint("domain:tls");
+    expect(hint).toStartWith("CWE-319: ");
+    expect(hint.length).toBeLessThanOrEqual("CWE-319: ".length + 221);
+  });
+
+  test("keyword token normalizes case (kw:JWT → CWE-347 mapping)", async () => {
+    // CWE-347 ships no mitigations upstream, so the hint degrades to "" —
+    // the mapping itself is still exercised via the map key.
+    expect(CONCERN_CWES.jwt).toBe("CWE-347");
+    expect(await mitigationHint("kw:JWT")).toBe("");
+  });
+
+  test("bcrypt keyword prefers implementation-phase mitigation", async () => {
+    const hint = await mitigationHint("kw:bcrypt");
+    expect(hint).toStartWith("CWE-916: ");
+    const w = (await lookupCwe("CWE-916", true)) as {
+      potential_mitigations: Array<{ phase?: string; description: string }>;
+    };
+    const impl = w.potential_mitigations.find((m) =>
+      m.phase?.includes("Implementation")
+    )!;
+    expect(hint).toContain(impl.description.replace(/\s+/g, " ").slice(0, 60));
+  });
+
+  test("unmapped concern yields empty hint", async () => {
+    expect(await mitigationHint("kw:webhook")).toBe("");
+    expect(await mitigationHint("path")).toBe("");
+  });
+
+  test("formatConcernLine appends mitigation line for mapped concerns", async () => {
+    const line = await formatConcernLine("kw:bcrypt", "bcrypt password hashing", "  ");
+    const [first, second] = line.split("\n");
+    expect(first).toStartWith("  - bcrypt → ");
+    expect(second).toStartWith("      ↳ CWE-916: ");
+  });
+
+  test("formatConcernLine falls back to single line for unmapped concerns", async () => {
+    const line = await formatConcernLine("kw:webhook", "webhook", "  ");
+    expect(line.split("\n").length).toBe(1);
+    expect(line).toStartWith("  - webhook → ");
+  });
+
+  test("gate and nudge render identical guidance for the same concern", async () => {
+    const nudge = await formatConcernLine("domain:auth", "auth login", "  ");
+    const gate = await formatConcernLine("domain:auth", "auth login", "    ");
+    expect(gate.replace(/^ {4}/gm, "  ")).toBe(nudge);
   });
 });
