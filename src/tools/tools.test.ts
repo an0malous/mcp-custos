@@ -1,6 +1,12 @@
 import { describe, expect, test } from "bun:test";
 import { lookupControl, searchControls, listByCategory } from "./controls.js";
-import { lookupNistControl, searchNistControls, listNistFamily } from "./nist.js";
+import {
+  lookupNistControl,
+  searchNistControls,
+  listNistFamily,
+  normalizeNistId,
+  citationForm,
+} from "./nist.js";
 import { lookupCloudControl, searchCloudControls } from "./cloud.js";
 import { lookupNistCloudTopic, searchNistCloudTopics } from "./nist-cloud.js";
 
@@ -54,6 +60,68 @@ describe("NIST 800-53", () => {
     const r = await listNistFamily("AC");
     expect(r).not.toBeNull();
     expect(r!.length).toBeGreaterThan(0);
+  });
+
+  test("enhancement lookup accepts citation form IA-5(1)", async () => {
+    const r = (await lookupNistControl("IA-5(1)")) as {
+      id: string;
+      cite_as: string;
+      title: string;
+      statement: string;
+    };
+    expect(r).not.toBeNull();
+    expect(r.id).toBe("IA-5.1");
+    expect(r.cite_as).toBe("IA-5(1)");
+    expect(r.title.toLowerCase()).toContain("password");
+    expect(r.statement.length).toBeGreaterThan(0);
+  });
+
+  test("enhancement lookup accepts OSCAL dot form IA-5.1", async () => {
+    const dot = (await lookupNistControl("IA-5.1")) as { id: string };
+    const paren = (await lookupNistControl("IA-5(1)")) as { id: string };
+    expect(dot.id).toBe(paren.id);
+  });
+
+  test("normalizeNistId and citationForm round-trip", () => {
+    expect(normalizeNistId(" ia_5(1) ")).toBe("IA-5.1");
+    expect(citationForm("IA-5.1")).toBe("IA-5(1)");
+    expect(citationForm("AC-1")).toBe("AC-1");
+  });
+
+  test("withdrawn control returns marker, not blank guidance", async () => {
+    const r = (await lookupNistControl("AC-13")) as {
+      withdrawn?: boolean;
+      statement?: string;
+    };
+    expect(r).not.toBeNull();
+    expect(r.withdrawn).toBe(true);
+    expect(r.statement).toBeUndefined();
+  });
+
+  test("search excludes withdrawn entries", async () => {
+    const r = await searchNistControls("review", 200);
+    const ids = r.results.map((c) => c.id);
+    expect(ids).not.toContain("AC-13");
+    for (const c of r.results) {
+      expect(c.statement.length).toBeGreaterThan(0);
+    }
+  });
+
+  test("detailed lookup filters withdrawn enhancements", async () => {
+    const r = (await lookupNistControl("AC-2", true)) as {
+      enhancements: Array<{ id: string; statement: string; cite_as: string }>;
+    };
+    const ids = r.enhancements.map((e) => e.id);
+    expect(ids).not.toContain("AC-2.10");
+    for (const e of r.enhancements) {
+      expect(e.statement.length).toBeGreaterThan(0);
+      expect(e.cite_as).toMatch(/^AC-2\(\d+\)$/);
+    }
+  });
+
+  test("listNistFamily excludes withdrawn controls", async () => {
+    const r = (await listNistFamily("AC")) as Array<{ id: string }>;
+    expect(r.map((c) => c.id)).not.toContain("AC-13");
   });
 });
 
