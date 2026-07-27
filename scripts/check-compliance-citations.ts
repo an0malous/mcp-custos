@@ -16,12 +16,11 @@ import {
   hasCitation,
   loadProjectConfig,
   resolveConfig,
-  formatSuggestedControls,
+  formatConcernLine,
 } from "../src/compliance-detect.js";
 import {
   concernTokens,
   concernQuery,
-  conciseLabel,
 } from "../src/nudge-suppression.js";
 import { parseAddedByFile } from "../src/diff-utils.js";
 
@@ -99,16 +98,9 @@ const rendered = allConcerns.slice(0, MAX_RENDERED);
 const overflow = allConcerns.length - rendered.length;
 
 const suggestionLines = await Promise.all(
-  rendered.map(async (token) => {
-    const ctx = concernContext.get(token)!;
-    let detail = "";
-    try {
-      detail = await formatSuggestedControls(concernQuery(token, ctx), 2, 1);
-    } catch {
-      detail = "";
-    }
-    return `    - ${conciseLabel(token)} → ${detail || "(run controls_for_change for full detail)"}`;
-  })
+  rendered.map((token) =>
+    formatConcernLine(token, concernQuery(token, concernContext.get(token)!), "    ")
+  )
 );
 if (overflow > 0) {
   suggestionLines.push(`    - (+${overflow} more — run controls_for_change)`);

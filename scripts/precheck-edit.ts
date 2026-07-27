@@ -14,7 +14,7 @@ import {
   detect,
   loadProjectConfig,
   resolveConfig,
-  formatSuggestedControls,
+  formatConcernLine,
 } from "../src/compliance-detect.js";
 import {
   concernTokens,
@@ -116,19 +116,15 @@ try {
 
   const pathHint = basename(filePath);
   const suggestionLines = await Promise.all(
-    rendered.map(async (token) => {
-      const label = conciseLabel(token);
+    rendered.map((token) =>
       // Query with surrounding detection context so a bare keyword still
       // returns relevant controls rather than degrading to the fallback.
-      const query = concernQuery(token, { domain: result.domain, pathHint });
-      let detail = "";
-      try {
-        detail = await formatSuggestedControls(query, 2, 1);
-      } catch {
-        detail = "";
-      }
-      return `  - ${label} → ${detail || "(run controls_for_change for full detail)"}`;
-    })
+      formatConcernLine(
+        token,
+        concernQuery(token, { domain: result.domain, pathHint }),
+        "  "
+      )
+    )
   );
   if (overflow > 0) {
     suggestionLines.push(`  - (+${overflow} more — run controls_for_change)`);
