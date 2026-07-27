@@ -1,0 +1,22 @@
+{
+  "feature_name": "controls-ranking-tuning",
+  "created_at": "2026-07-27",
+  "updated_at": "2026-07-27",
+  "language": "en",
+  "phase": "implemented",
+  "approvals": {
+    "requirements": {
+      "generated": true,
+      "approved": true
+    },
+    "design": {
+      "generated": true,
+      "approved": true
+    },
+    "tasks": {
+      "generated": true,
+      "approved": true
+    }
+  },
+  "ready_for_implementation": true
+}
