@@ -3,7 +3,7 @@
   "name": "Secure Software Development Framework (SSDF)",
   "version": "1.1",
   "oscal_version": "1.0.0",
-  "last_modified": "2025-07-06T22:16:50.000000-00:00",
+  "last_modified": "2026-05-12T02:02:16.00000-00:00",
   "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
   "source": "https://raw.githubusercontent.com/usnistgov/oscal-content/main/nist.gov/SP800-218/ver1/json/NIST_SP800-218_ver1_catalog-min.json",
   "groups": [

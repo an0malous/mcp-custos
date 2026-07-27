@@ -1,0 +1,348 @@
+{
+  "note": "Project-curated CWE overlay: Top 25 (2024) ranks plus ASVS chapter and NIST 800-53 control mappings. Curated by this project, not from an official crosswalk \u2014 merged onto the MITRE corpus by scripts/update-sources.ts. Confirm specific control ids via asvs_search / nist_search_controls.",
+  "weaknesses": [
+    {
+      "id": "CWE-79",
+      "rank_2024": 1,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V1",
+        "V3"
+      ],
+      "nist_families": [
+        "SI-10",
+        "SC-18"
+      ]
+    },
+    {
+      "id": "CWE-787",
+      "rank_2024": 2,
+      "asvs_chapters": [
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10",
+        "SI-16"
+      ]
+    },
+    {
+      "id": "CWE-89",
+      "rank_2024": 3,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V1",
+        "V2"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-352",
+      "rank_2024": 4,
+      "owasp_top10": "A01:2021-Broken Access Control",
+      "asvs_chapters": [
+        "V4"
+      ],
+      "nist_families": [
+        "SC-23"
+      ]
+    },
+    {
+      "id": "CWE-22",
+      "rank_2024": 5,
+      "owasp_top10": "A01:2021-Broken Access Control",
+      "asvs_chapters": [
+        "V5"
+      ],
+      "nist_families": [
+        "SI-10",
+        "AC-3"
+      ]
+    },
+    {
+      "id": "CWE-125",
+      "rank_2024": 6,
+      "asvs_chapters": [
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10",
+        "SI-16"
+      ]
+    },
+    {
+      "id": "CWE-78",
+      "rank_2024": 7,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V1",
+        "V2"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-416",
+      "rank_2024": 8,
+      "asvs_chapters": [
+        "V15"
+      ],
+      "nist_families": [
+        "SI-16"
+      ]
+    },
+    {
+      "id": "CWE-862",
+      "rank_2024": 9,
+      "owasp_top10": "A01:2021-Broken Access Control",
+      "asvs_chapters": [
+        "V8"
+      ],
+      "nist_families": [
+        "AC-3",
+        "AC-6"
+      ]
+    },
+    {
+      "id": "CWE-434",
+      "rank_2024": 10,
+      "asvs_chapters": [
+        "V5"
+      ],
+      "nist_families": [
+        "SI-3",
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-94",
+      "rank_2024": 11,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V1",
+        "V2"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-20",
+      "rank_2024": 12,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V2"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-77",
+      "rank_2024": 13,
+      "owasp_top10": "A03:2021-Injection",
+      "asvs_chapters": [
+        "V1",
+        "V2"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-287",
+      "rank_2024": 14,
+      "owasp_top10": "A07:2021-Identification and Authentication Failures",
+      "asvs_chapters": [
+        "V6"
+      ],
+      "nist_families": [
+        "IA-2",
+        "IA-5",
+        "IA-8"
+      ]
+    },
+    {
+      "id": "CWE-269",
+      "rank_2024": 15,
+      "owasp_top10": "A01:2021-Broken Access Control",
+      "asvs_chapters": [
+        "V8"
+      ],
+      "nist_families": [
+        "AC-6"
+      ]
+    },
+    {
+      "id": "CWE-502",
+      "rank_2024": 16,
+      "owasp_top10": "A08:2021-Software and Data Integrity Failures",
+      "asvs_chapters": [
+        "V2",
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-200",
+      "rank_2024": 17,
+      "owasp_top10": "A04:2021-Insecure Design",
+      "asvs_chapters": [
+        "V14",
+        "V16"
+      ],
+      "nist_families": [
+        "SC-8",
+        "AC-3"
+      ]
+    },
+    {
+      "id": "CWE-863",
+      "rank_2024": 18,
+      "owasp_top10": "A01:2021-Broken Access Control",
+      "asvs_chapters": [
+        "V8"
+      ],
+      "nist_families": [
+        "AC-3",
+        "AC-6"
+      ]
+    },
+    {
+      "id": "CWE-918",
+      "rank_2024": 19,
+      "owasp_top10": "A10:2021-Server-Side Request Forgery",
+      "asvs_chapters": [
+        "V2",
+        "V12"
+      ],
+      "nist_families": [
+        "SC-7",
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-119",
+      "rank_2024": 20,
+      "asvs_chapters": [
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10",
+        "SI-16"
+      ]
+    },
+    {
+      "id": "CWE-476",
+      "rank_2024": 21,
+      "asvs_chapters": [
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-798",
+      "rank_2024": 22,
+      "owasp_top10": "A07:2021-Identification and Authentication Failures",
+      "asvs_chapters": [
+        "V6",
+        "V13"
+      ],
+      "nist_families": [
+        "IA-5"
+      ]
+    },
+    {
+      "id": "CWE-190",
+      "rank_2024": 23,
+      "asvs_chapters": [
+        "V2",
+        "V15"
+      ],
+      "nist_families": [
+        "SI-10"
+      ]
+    },
+    {
+      "id": "CWE-400",
+      "rank_2024": 24,
+      "asvs_chapters": [
+        "V13"
+      ],
+      "nist_families": [
+        "SC-5"
+      ]
+    },
+    {
+      "id": "CWE-306",
+      "rank_2024": 25,
+      "owasp_top10": "A07:2021-Identification and Authentication Failures",
+      "asvs_chapters": [
+        "V6"
+      ],
+      "nist_families": [
+        "IA-2",
+        "AC-14"
+      ]
+    },
+    {
+      "id": "CWE-327",
+      "owasp_top10": "A02:2021-Cryptographic Failures",
+      "asvs_chapters": [
+        "V11"
+      ],
+      "nist_families": [
+        "SC-13",
+        "SC-12"
+      ]
+    },
+    {
+      "id": "CWE-326",
+      "owasp_top10": "A02:2021-Cryptographic Failures",
+      "asvs_chapters": [
+        "V11"
+      ],
+      "nist_families": [
+        "SC-13",
+        "SC-12"
+      ]
+    },
+    {
+      "id": "CWE-319",
+      "owasp_top10": "A02:2021-Cryptographic Failures",
+      "asvs_chapters": [
+        "V12"
+      ],
+      "nist_families": [
+        "SC-8"
+      ]
+    },
+    {
+      "id": "CWE-732",
+      "owasp_top10": "A05:2021-Security Misconfiguration",
+      "asvs_chapters": [
+        "V8",
+        "V13"
+      ],
+      "nist_families": [
+        "AC-3",
+        "CM-6"
+      ]
+    },
+    {
+      "id": "CWE-1021",
+      "asvs_chapters": [
+        "V3"
+      ],
+      "nist_families": [
+        "SC-18"
+      ]
+    }
+  ]
+}

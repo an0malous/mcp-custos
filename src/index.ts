@@ -554,20 +554,26 @@ server.tool(
 
 server.tool(
   "cwe_lookup",
-  "Look up a CWE entry by ID (e.g. CWE-79). Returns name, OWASP Top 10 reference, and mapped ASVS chapters / NIST 800-53 families.",
+  "Look up any CWE weakness by ID from the full MITRE corpus (~944 entries). Summary by default; set detailed=true for official potential mitigations, demonstrative code examples, detection methods, related CWEs, and observed CVE examples.",
   {
-    id: z.string().describe("CWE ID, e.g. CWE-79, CWE-89, CWE-352"),
+    id: z.string().describe("CWE ID, e.g. CWE-79, CWE-89, CWE-611"),
+    detailed: z
+      .boolean()
+      .default(false)
+      .describe(
+        "If true, return full MITRE guidance: mitigations, code examples, detection methods, relations"
+      ),
   },
-  async ({ id }) => {
-    const r = await lookupCwe(id);
-    if (!r) return text(`CWE ${id} not found in the curated Top 25+ set.`);
+  async ({ id, detailed }) => {
+    const r = await lookupCwe(id, detailed);
+    if (!r) return text(`CWE ${id} not found in the MITRE catalog (deprecated entries are excluded).`);
     return json(r);
   }
 );
 
 server.tool(
   "cwe_search",
-  "Search CWE entries by keyword across name, ID, and OWASP Top 10 category",
+  "Search the full MITRE CWE corpus by keyword across name, ID, description, and OWASP Top 10 category. Returns summaries; use cwe_lookup with detailed=true for guidance text.",
   {
     query: z.string().describe("Search keyword, e.g. 'injection', 'authorization', 'XSS'"),
     limit: z
@@ -594,13 +600,13 @@ server.tool(
 
 server.tool(
   "cwe_map_to_controls",
-  "Bridge a CWE id (e.g. from a SAST/DAST/security-review finding) to the ASVS chapters and NIST 800-53 control families that mitigate it. Use this to translate scanner output into the compliance citation format used in code.",
+  "Bridge a CWE id (e.g. from a SAST/DAST/security-review finding) to the ASVS chapters and NIST 800-53 control families that mitigate it, plus official related CWEs. Use this to translate scanner output into the compliance citation format used in code.",
   {
     id: z.string().describe("CWE ID, e.g. CWE-79, CWE-89, CWE-352"),
   },
   async ({ id }) => {
     const r = await cweMapToControls(id);
-    if (!r) return text(`CWE ${id} not found in the curated Top 25+ set.`);
+    if (!r) return text(`CWE ${id} not found in the MITRE catalog (deprecated entries are excluded).`);
     return json(r);
   }
 );
