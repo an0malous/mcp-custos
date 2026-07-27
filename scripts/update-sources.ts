@@ -6,6 +6,8 @@
  *   - NIST 800-53 OSCAL catalog (usnistgov/oscal-content)
  *   - NIST SSDF v1.1 OSCAL catalog (usnistgov/oscal-content)
  *   - OWASP ASVS release JSON (OWASP/ASVS GitHub releases)
+ *   - MITRE CWE cwec catalog (cwe.mitre.org zip; curated overlay merged
+ *     from src/data/cwe-curated-overlay.json)
  *
  * Verifies (read-only):
  *   - ISO 27001 control titles against the snapshotted ISO 27002:2022 TOC
@@ -13,7 +15,6 @@
  * Skipped (manually curated, no upstream auto-update):
  *   - ISO 27017 controls
  *   - NIST cloud guidance (extracted from PDFs)
- *   - CWE Top 25 (hand-curated mappings)
  *
  * Usage: bun run scripts/update-sources.ts
  *
@@ -24,6 +25,7 @@ import { spawn } from "node:child_process";
 import { existsSync, statSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { unzipSync } from "fflate";
 import {
   buildResourceTitleMap,
   parseExternalRefs,
@@ -31,6 +33,7 @@ import {
   statementOf,
   type OscalCatalog,
 } from "./_oscal.js";
+import { buildDataset, parseCwecXml, type CweCuratedOverlay } from "./_cwe.js";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -42,6 +45,7 @@ const NIST_SSDF_URL =
   "https://raw.githubusercontent.com/usnistgov/oscal-content/main/nist.gov/SP800-218/ver1/json/NIST_SP800-218_ver1_catalog-min.json";
 const ASVS_LATEST_RELEASE =
   "https://api.github.com/repos/OWASP/ASVS/releases/latest";
+const CWE_ZIP_URL = "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip";
 
 const SSDF_GROUP_NAMES: Record<string, string> = {
   PO: "Prepare the Organization",
@@ -158,6 +162,23 @@ async function updateAsvs(): Promise<string> {
   return `owasp-asvs.json: ${total} requirements (v${data.Version}), ${sizeKbDelta(before, out)}`;
 }
 
+async function updateCwe(): Promise<string> {
+  const out = resolve(DATA_DIR, "cwe.json");
+  const before = priorSize(out);
+  const r = await fetch(CWE_ZIP_URL);
+  if (!r.ok) throw new Error(`fetch ${CWE_ZIP_URL} failed: ${r.status}`);
+  const unzipped = unzipSync(new Uint8Array(await r.arrayBuffer()));
+  const xmlName = Object.keys(unzipped).find((n) => n.endsWith(".xml"));
+  if (!xmlName) throw new Error("cwec zip contains no .xml member");
+  const xml = new TextDecoder().decode(unzipped[xmlName]);
+  const overlay = (await Bun.file(
+    resolve(DATA_DIR, "cwe-curated-overlay.json")
+  ).json()) as CweCuratedOverlay;
+  const dataset = buildDataset(parseCwecXml(xml), overlay);
+  await Bun.write(out, JSON.stringify(dataset, null, 2));
+  return `cwe.json: ${dataset.weaknesses.length} weaknesses (cwec v${dataset.catalog_version}), ${sizeKbDelta(before, out)}`;
+}
+
 function runVerifyIso(): Promise<string> {
   return new Promise((res) => {
     const script = resolve(SCRIPT_DIR, "verify-iso-controls.ts");
@@ -178,6 +199,7 @@ const tasks = [
   { name: "NIST 800-53 OSCAL", run: updateNist80053 },
   { name: "NIST SSDF OSCAL", run: updateSsdf },
   { name: "OWASP ASVS release", run: updateAsvs },
+  { name: "MITRE CWE catalog", run: updateCwe },
   { name: "ISO 27001 verify", run: runVerifyIso },
 ];
 
