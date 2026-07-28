@@ -49,15 +49,6 @@ Copies three opt-in layers into the target: `.claude/settings.json` (pre-edit nu
 custos-evidence /path/to/your/repo --out=COMPLIANCE.md
 ```
 
-## Try it
-
-```
-"What should I watch out for implementing OAuth refresh tokens?"
-"Look up CWE-89 in detail"          # official mitigations + code examples
-"What NIST controls back ISO 27001 A.8.24, in detail?"
-"We're about to store PII — what controls now apply?"
-```
-
 ## Data and provenance
 
 All datasets are bundled (`src/data/`) and refreshed from official sources via `bun run update-sources`: the MITRE cwec catalog, NIST OSCAL (800-53, SSDF), the OWASP ASVS release JSON, NIST OLIR mappings, and verbatim extracts from the NIST cloud SPs. ISO standard text is not shipped (paywalled) — only IDs/titles, with implementation detail coming from the mapped NIST controls. The only project-curated (non-official) data: the CWE→ASVS/NIST starter mappings and the Top 25 overlay, labeled as such inside the dataset.
