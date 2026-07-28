@@ -15,6 +15,8 @@ import {
   loadProjectConfig,
   resolveConfig,
   formatConcernLine,
+  hasDualPhaseHint,
+  PHASE_FOOTER,
 } from "../src/compliance-detect.js";
 import {
   concernTokens,
@@ -135,6 +137,7 @@ try {
     `Detected concerns: ${surfaced.map(conciseLabel).join(", ")}.`,
     `Likely controls:`,
     ...suggestionLines,
+    ...(suggestionLines.some(hasDualPhaseHint) ? [PHASE_FOOTER] : []),
     `If already cited in this file or PR, ignore. Otherwise add a "// Refs: NIST <id>" line in the change.`,
   ].join("\n");
 

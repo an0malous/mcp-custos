@@ -9,8 +9,9 @@ import {
   extractCitations,
   resolveConfig,
   CONCERN_CWES,
-  mitigationHint,
+  mitigationHints,
   formatConcernLine,
+  hasDualPhaseHint,
 } from "./compliance-detect.js";
 import { lookupCwe } from "./tools/cwe.js";
 
@@ -257,41 +258,69 @@ describe("mitigation hints (hook-mitigation-surfacing)", () => {
     }
   });
 
-  test("domain token yields an attributed, bounded hint", async () => {
-    const hint = await mitigationHint("domain:tls");
-    expect(hint).toStartWith("CWE-319: ");
-    expect(hint.length).toBeLessThanOrEqual("CWE-319: ".length + 221);
-  });
-
-  test("keyword token normalizes case (kw:JWT → CWE-347 mapping)", async () => {
-    // CWE-347 ships no mitigations upstream, so the hint degrades to "" —
-    // the mapping itself is still exercised via the map key.
-    expect(CONCERN_CWES.jwt).toBe("CWE-347");
-    expect(await mitigationHint("kw:JWT")).toBe("");
-  });
-
-  test("bcrypt keyword prefers implementation-phase mitigation", async () => {
-    const hint = await mitigationHint("kw:bcrypt");
-    expect(hint).toStartWith("CWE-916: ");
+  test("dual-phase weakness yields labeled design + impl hints (kw:bcrypt → CWE-916)", async () => {
+    const hints = await mitigationHints("kw:bcrypt");
+    expect(hints.length).toBe(2);
+    expect(hints[0]).toStartWith("CWE-916 (design): ");
+    expect(hints[1]).toStartWith("CWE-916 (impl): ");
     const w = (await lookupCwe("CWE-916", true)) as {
       potential_mitigations: Array<{ phase?: string; description: string }>;
     };
+    const design = w.potential_mitigations.find(
+      (m) => m.phase === "Architecture and Design"
+    )!;
     const impl = w.potential_mitigations.find((m) =>
       m.phase?.includes("Implementation")
     )!;
-    expect(hint).toContain(impl.description.replace(/\s+/g, " ").slice(0, 60));
+    expect(hints[0]).toContain(design.description.replace(/\s+/g, " ").slice(0, 60));
+    expect(hints[1]).toContain(impl.description.replace(/\s+/g, " ").slice(0, 60));
+    for (const h of hints) {
+      expect(h.length).toBeLessThanOrEqual("CWE-916 (design): ".length + 221);
+    }
   });
 
-  test("unmapped concern yields empty hint", async () => {
-    expect(await mitigationHint("kw:webhook")).toBe("");
-    expect(await mitigationHint("path")).toBe("");
+  test("single-phase weaknesses keep the unlabeled one-line form", async () => {
+    // CWE-287 (auth) ships only an Architecture-and-Design mitigation;
+    // CWE-613 (session) only an Implementation one.
+    for (const [token, cwe] of [
+      ["domain:auth", "CWE-287"],
+      ["domain:session", "CWE-613"],
+    ] as const) {
+      const hints = await mitigationHints(token);
+      expect(hints.length).toBe(1);
+      expect(hints[0]).toStartWith(`${cwe}: `);
+      expect(hints[0]).not.toContain("(design)");
+      expect(hints[0]).not.toContain("(impl)");
+    }
   });
 
-  test("formatConcernLine appends mitigation line for mapped concerns", async () => {
+  test("keyword token normalizes case (kw:JWT → CWE-347 mapping)", async () => {
+    // CWE-347 ships no mitigations upstream, so hints degrade to [] —
+    // the mapping itself is still exercised via the map key.
+    expect(CONCERN_CWES.jwt).toBe("CWE-347");
+    expect(await mitigationHints("kw:JWT")).toEqual([]);
+  });
+
+  test("unmapped concern yields no hints", async () => {
+    expect(await mitigationHints("kw:webhook")).toEqual([]);
+    expect(await mitigationHints("path")).toEqual([]);
+  });
+
+  test("formatConcernLine renders both phase hints for a dual-phase concern", async () => {
     const line = await formatConcernLine("kw:bcrypt", "bcrypt password hashing", "  ");
-    const [first, second] = line.split("\n");
+    const [first, second, third] = line.split("\n");
     expect(first).toStartWith("  - bcrypt → ");
-    expect(second).toStartWith("      ↳ CWE-916: ");
+    expect(second).toStartWith("      ↳ CWE-916 (design): ");
+    expect(third).toStartWith("      ↳ CWE-916 (impl): ");
+    expect(hasDualPhaseHint(line)).toBe(true);
+  });
+
+  test("formatConcernLine keeps one hint line for single-phase concerns", async () => {
+    const line = await formatConcernLine("domain:auth", "auth login", "  ");
+    const parts = line.split("\n");
+    expect(parts.length).toBe(2);
+    expect(parts[1]).toStartWith("      ↳ CWE-287: ");
+    expect(hasDualPhaseHint(line)).toBe(false);
   });
 
   test("formatConcernLine falls back to single line for unmapped concerns", async () => {

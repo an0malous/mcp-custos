@@ -17,6 +17,8 @@ import {
   loadProjectConfig,
   resolveConfig,
   formatConcernLine,
+  hasDualPhaseHint,
+  PHASE_FOOTER,
 } from "../src/compliance-detect.js";
 import {
   concernTokens,
@@ -119,6 +121,9 @@ if (suggestionLines.length > 0) {
   lines.push("");
   lines.push("  Suggested controls:");
   lines.push(...suggestionLines);
+  if (suggestionLines.some(hasDualPhaseHint)) {
+    lines.push(`  ${PHASE_FOOTER}`);
+  }
 }
 lines.push("");
 lines.push(

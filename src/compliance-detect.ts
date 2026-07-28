@@ -320,31 +320,60 @@ function truncateHint(text: string): string {
 }
 
 /**
- * One-line official mitigation for a concern: "CWE-916: <verbatim MITRE
- * mitigation, truncated>". Prefers implementation-phase mitigations, then
- * architecture-phase, then the first available. Returns "" for unmapped
+ * Rendered once at the bottom of a hook message when any concern produced a
+ * dual-phase hint, so the model knows how to choose between the two lines.
+ */
+export const PHASE_FOOTER =
+  "(design) applies if this change introduces the mechanism; (impl) if it works within an existing one — apply whichever matches.";
+
+const DESIGN_LABEL = "(design)";
+const IMPL_LABEL = "(impl)";
+
+/**
+ * Official mitigation line(s) for a concern, each "CWE-916: <verbatim MITRE
+ * mitigation, truncated>". When the weakness ships distinct design-only and
+ * implementation-phase mitigations, both are returned, labeled "(design)"
+ * and "(impl)" — the reader knows whether the change is architectural or
+ * implementation work, so the choice is deferred to it (see PHASE_FOOTER).
+ * Otherwise a single unlabeled line: implementation-phase preferred, then
+ * architecture-phase, then the first available. Returns [] for unmapped
  * concerns, mitigation-less weaknesses, or any retrieval failure — callers
  * render the base suggestion line unchanged in that case.
  */
-export async function mitigationHint(token: string): Promise<string> {
+export async function mitigationHints(token: string): Promise<string[]> {
   try {
     const cweId = CONCERN_CWES[conciseLabelOf(token).toLowerCase()];
-    if (!cweId) return "";
+    if (!cweId) return [];
     const w = (await lookupCwe(cweId, true)) as {
       potential_mitigations?: Array<{ phase?: string; description: string }>;
     } | null;
     const mitigations = (w?.potential_mitigations ?? []).filter(
       (m) => m.description.length > 0
     );
-    if (mitigations.length === 0) return "";
+    if (mitigations.length === 0) return [];
+    const design = mitigations.find(
+      (m) =>
+        m.phase?.includes("Architecture and Design") &&
+        !m.phase.includes("Implementation")
+    );
+    const impl = mitigations.find((m) => m.phase?.includes("Implementation"));
+    if (design && impl && design.description !== impl.description) {
+      return [
+        `${cweId} ${DESIGN_LABEL}: ${truncateHint(design.description)}`,
+        `${cweId} ${IMPL_LABEL}: ${truncateHint(impl.description)}`,
+      ];
+    }
     const pick =
-      mitigations.find((m) => m.phase?.includes("Implementation")) ??
-      mitigations.find((m) => m.phase?.includes("Architecture and Design")) ??
-      mitigations[0];
-    return `${cweId}: ${truncateHint(pick.description)}`;
+      impl ?? design ?? mitigations[0];
+    return [`${cweId}: ${truncateHint(pick.description)}`];
   } catch {
-    return "";
+    return [];
   }
+}
+
+/** True when a rendered concern/hint block contains a dual-phase hint. */
+export function hasDualPhaseHint(text: string): boolean {
+  return text.includes(` ${DESIGN_LABEL}: `);
 }
 
 /**
@@ -367,8 +396,9 @@ export async function formatConcernLine(
   const lines = [
     `${indent}- ${conciseLabelOf(token)} → ${detail || "(run controls_for_change for full detail)"}`,
   ];
-  const mitigation = await mitigationHint(token);
-  if (mitigation) lines.push(`${indent}    ↳ ${mitigation}`);
+  for (const hint of await mitigationHints(token)) {
+    lines.push(`${indent}    ↳ ${hint}`);
+  }
   return lines.join("\n");
 }
 
