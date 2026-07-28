@@ -41,18 +41,18 @@ All cross-framework mappings come from official sources:
 
 ## Setup
 
-Requires [Bun](https://bun.sh).
+Requires [Bun](https://bun.sh) (the package executes TypeScript directly under Bun).
 
 ```bash
-git clone <repo-url>
-cd mcp-security-compliance
-bun install
+bun add -g mcp-security-compliance   # or: npm install -g mcp-security-compliance
 ```
+
+This installs the server plus four commands: `mcp-security-compliance` (the MCP server), `mcp-sc-precheck-edit` and `mcp-sc-check-citations` (the hooks), `mcp-sc-evidence` (audit index generator), and `mcp-sc-init` (project setup helper).
 
 ### Claude Code
 
 ```bash
-claude mcp add mcp-security-compliance -- bun run /absolute/path/to/mcp-security-compliance/src/index.ts
+claude mcp add mcp-security-compliance -- mcp-security-compliance
 ```
 
 ### Claude Desktop / Cursor
@@ -63,12 +63,18 @@ Add to your MCP config (`claude_desktop_config.json` or `.cursor/mcp.json`):
 {
   "mcpServers": {
     "mcp-security-compliance": {
-      "command": "bun",
-      "args": ["run", "src/index.ts"],
-      "cwd": "/absolute/path/to/mcp-security-compliance"
+      "command": "mcp-security-compliance"
     }
   }
 }
+```
+
+### Development (from a checkout)
+
+```bash
+git clone <repo-url> && cd mcp-security-compliance
+bun install
+bun link   # exposes the same five commands from this checkout
 ```
 
 ## Example Prompts
@@ -141,15 +147,13 @@ Defaults are conservative — narrow paths (`auth/`, `crypto/`, `iam/`, `secrets
 
 ### Setup
 
-Quickest path — run the init script from this checkout, pointing at your target project:
+Quickest path — run the init helper, pointing at your target project:
 
 ```bash
-bun run init /path/to/your/project
+mcp-sc-init /path/to/your/project
 ```
 
-It copies `.claude/settings.json`, `.husky/pre-commit`, and `.github/workflows/compliance-check.yml` into the target with the `MCP_PATH` placeholder substituted automatically. Skip individual layers with `--skip-hooks=husky,ci`.
-
-If you'd rather wire pieces manually, the templates live in `templates/` — replace `/MCP_PATH/` with the absolute path to your `mcp-security-compliance` checkout in each.
+It copies `.claude/settings.json`, `.husky/pre-commit`, and `.github/workflows/compliance-check.yml` into the target. The copied configs invoke the installed commands (`mcp-sc-precheck-edit`, `mcp-sc-check-citations`), so they work as long as the package is installed globally (or `bun link`ed from a checkout). Skip individual layers with `--skip-hooks=husky,ci`. Manual wiring: the templates live in `templates/`.
 
 ### What gets cited
 
@@ -167,7 +171,7 @@ ISO Annex A IDs alone don't satisfy the hook — ISO is too coarse to describe a
 When you're heading into an audit, run the evidence index generator:
 
 ```bash
-bun run evidence /path/to/your/repo --out=COMPLIANCE.md
+mcp-sc-evidence /path/to/your/repo --out=COMPLIANCE.md   # or from a checkout: bun run evidence
 ```
 
 It walks the repo, finds every `// Refs: NIST <id>` and `// Refs: ASVS <id>` annotation, resolves NIST → ISO Annex A via the bundled OLIR mappings, and emits a markdown file grouped by ISO control id with file:line evidence pointers. Hand to the auditor.

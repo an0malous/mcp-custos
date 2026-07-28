@@ -1,5 +1,5 @@
 {
-  "_comment": "Drop into your project's .claude/settings.json. Replace MCP_PATH with the absolute path to the mcp-security-compliance checkout.",
+  "_comment": "Drop into your project's .claude/settings.json. Requires the mcp-security-compliance npm package installed globally (bun add -g mcp-security-compliance or npm i -g).",
   "hooks": {
     "PreToolUse": [
       {
@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bun run /MCP_PATH/scripts/precheck-edit.ts"
+            "command": "mcp-sc-precheck-edit"
           }
         ]
       }
