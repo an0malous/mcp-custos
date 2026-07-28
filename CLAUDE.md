@@ -1,6 +1,6 @@
 # CLAUDE.md — agent guide
 
-`mcp-security-compliance` is an MCP server exposing compliance reference data (ISO 27001, NIST 800-53, OWASP ASVS, NIST SSDF, ISO 27017, NIST cloud guidance) plus the pre-edit and pre-commit hooks that make consultation land in code. See `README.md` for the product picture.
+`mcp-custos` (package name; repo: mcp-security-compliance) is an MCP server exposing secure-coding and compliance reference data (ISO 27001, NIST 800-53, OWASP ASVS, NIST SSDF, ISO 27017, NIST cloud guidance) plus the pre-edit and pre-commit hooks that make consultation land in code. See `README.md` for the product picture.
 
 This repo uses **Kiro-style spec-driven development**. Read the steering docs as project memory before non-trivial work, and run feature work through the spec flow below.
 

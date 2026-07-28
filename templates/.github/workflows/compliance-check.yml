@@ -16,10 +16,10 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install mcp-security-compliance
-        run: bun add -g mcp-security-compliance
+      - name: Install mcp-custos
+        run: bun add -g mcp-custos
 
       - name: Verify compliance citations on changed files
         env:
           COMPLIANCE_BASE: origin/${{ github.base_ref }}
-        run: mcp-sc-check-citations --strict
+        run: custos-check-citations --strict

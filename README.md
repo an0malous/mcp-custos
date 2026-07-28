@@ -1,6 +1,6 @@
-# MCP Security Compliance
+# Custos (mcp-custos)
 
-Authoritative compliance reference for AI-assisted development — and tooling to make sure the compliance actually lands in code.
+Custos — Latin for "guardian" — is a secure-coding helper for AI agents: an MCP server carrying official secure-coding and compliance guidance (full MITRE CWE corpus, NIST 800-53, OWASP ASVS, ISO 27001, NIST SSDF), plus hooks that make the guidance actually land in code.
 
 This server addresses two pain points engineers have with compliance:
 
@@ -44,15 +44,15 @@ All cross-framework mappings come from official sources:
 Requires [Bun](https://bun.sh) (the package executes TypeScript directly under Bun).
 
 ```bash
-bun add -g mcp-security-compliance   # or: npm install -g mcp-security-compliance
+bun add -g mcp-custos   # or: npm install -g mcp-custos
 ```
 
-This installs the server plus four commands: `mcp-security-compliance` (the MCP server), `mcp-sc-precheck-edit` and `mcp-sc-check-citations` (the hooks), `mcp-sc-evidence` (audit index generator), and `mcp-sc-init` (project setup helper).
+This installs the server plus four commands: `mcp-custos` (the MCP server), `custos-precheck-edit` and `custos-check-citations` (the hooks), `custos-evidence` (audit index generator), and `custos-init` (project setup helper).
 
 ### Claude Code
 
 ```bash
-claude mcp add mcp-security-compliance -- mcp-security-compliance
+claude mcp add custos -- mcp-custos
 ```
 
 ### Claude Desktop / Cursor
@@ -62,8 +62,8 @@ Add to your MCP config (`claude_desktop_config.json` or `.cursor/mcp.json`):
 ```json
 {
   "mcpServers": {
-    "mcp-security-compliance": {
-      "command": "mcp-security-compliance"
+    "custos": {
+      "command": "mcp-custos"
     }
   }
 }
@@ -97,7 +97,7 @@ This server provides primitives (lookup, search, list, map) that compose. You do
 
 Set this in your project's `CLAUDE.md` (once):
 
-> *This project follows ISO 27001:2022. Use the mcp-security-compliance MCP. For any security-touching change, identify relevant ISO Annex A controls, resolve to mapped NIST 800-53 detailed guidance, implement to that spec. Cite NIST IDs in code comments and commit messages (`// Refs: NIST IA-5(1)`); ISO IDs belong in audit documentation, not source files.*
+> *This project follows ISO 27001:2022. Use the custos MCP (mcp-custos). For any security-touching change, identify relevant ISO Annex A controls, resolve to mapped NIST 800-53 detailed guidance, implement to that spec. Cite NIST IDs in code comments and commit messages (`// Refs: NIST IA-5(1)`); ISO IDs belong in audit documentation, not source files.*
 
 Then ask normally:
 
@@ -123,7 +123,7 @@ Claude chains: `ssdf_map_from_nist SC-13` → returns SSDF tasks (e.g. PW.5.1, P
 
 Use the `secure-by-design-plan` prompt:
 
-> `/mcp__mcp-security-compliance__secure-by-design-plan system="centralized logging pipeline" level="2"`
+> `/mcp__custos__secure-by-design-plan system="centralized logging pipeline" level="2"`
 
 Claude chains: `controls_for_change` for the system → SSDF practices PO + PW → ISO A.8.15, A.8.16 → mapped NIST AU-* → produces structured plan with controls and evidence requirements.
 
@@ -150,10 +150,10 @@ Defaults are conservative — narrow paths (`auth/`, `crypto/`, `iam/`, `secrets
 Quickest path — run the init helper, pointing at your target project:
 
 ```bash
-mcp-sc-init /path/to/your/project
+custos-init /path/to/your/project
 ```
 
-It copies `.claude/settings.json`, `.husky/pre-commit`, and `.github/workflows/compliance-check.yml` into the target. The copied configs invoke the installed commands (`mcp-sc-precheck-edit`, `mcp-sc-check-citations`), so they work as long as the package is installed globally (or `bun link`ed from a checkout). Skip individual layers with `--skip-hooks=husky,ci`. Manual wiring: the templates live in `templates/`.
+It copies `.claude/settings.json`, `.husky/pre-commit`, and `.github/workflows/compliance-check.yml` into the target. The copied configs invoke the installed commands (`custos-precheck-edit`, `custos-check-citations`), so they work as long as the package is installed globally (or `bun link`ed from a checkout). Skip individual layers with `--skip-hooks=husky,ci`. Manual wiring: the templates live in `templates/`.
 
 ### What gets cited
 
@@ -171,7 +171,7 @@ ISO Annex A IDs alone don't satisfy the hook — ISO is too coarse to describe a
 When you're heading into an audit, run the evidence index generator:
 
 ```bash
-mcp-sc-evidence /path/to/your/repo --out=COMPLIANCE.md   # or from a checkout: bun run evidence
+custos-evidence /path/to/your/repo --out=COMPLIANCE.md   # or from a checkout: bun run evidence
 ```
 
 It walks the repo, finds every `// Refs: NIST <id>` and `// Refs: ASVS <id>` annotation, resolves NIST → ISO Annex A via the bundled OLIR mappings, and emits a markdown file grouped by ISO control id with file:line evidence pointers. Hand to the auditor.
@@ -256,7 +256,7 @@ The full MITRE CWE corpus (~944 weaknesses, deprecated entries excluded) with of
 
 ## Prompts
 
-The server also exposes MCP prompts — invoke them in Claude Code as `/mcp__mcp-security-compliance__<name>`.
+The server also exposes MCP prompts — invoke them in Claude Code as `/mcp__custos__<name>`.
 
 | Prompt | What it does |
 |--------|-------------|
