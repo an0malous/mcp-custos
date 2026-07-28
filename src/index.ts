@@ -55,7 +55,7 @@ import pkg from "../package.json" with { type: "json" };
 
 const server = new McpServer(
   {
-    name: "mcp-security-compliance",
+    name: "mcp-custos",
     version: pkg.version,
   },
   {

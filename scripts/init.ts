@@ -1,12 +1,12 @@
 #!/usr/bin/env bun
 /**
  * Drops compliance hook templates into a target project. Templates invoke
- * the package's installed bin names (mcp-sc-precheck-edit,
- * mcp-sc-check-citations), so they work wherever the package is installed —
+ * the package's installed bin names (custos-precheck-edit,
+ * custos-check-citations), so they work wherever the package is installed —
  * globally via npm/bun, or from this checkout via `bun link`.
  *
  * Usage:
- *   mcp-sc-init /path/to/target-project [--skip-hooks=husky,ci]
+ *   custos-init /path/to/target-project [--skip-hooks=husky,ci]
  *   (from a checkout: bun run scripts/init.ts <target>)
  */
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
@@ -88,6 +88,6 @@ console.log("");
 if (copied > 0) {
   console.log("Next steps:");
   console.log("  1. Review the copied files, especially .claude/settings.json");
-  console.log("  2. Ensure mcp-security-compliance is installed globally (bun add -g mcp-security-compliance)");
+  console.log("  2. Ensure mcp-custos is installed globally (bun add -g mcp-custos)");
   console.log("  3. If using husky, ensure it's installed in your project (npx husky install)");
 }

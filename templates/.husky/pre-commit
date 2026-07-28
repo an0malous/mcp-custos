@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Wire the compliance-citation check into your project's pre-commit.
-# Requires the mcp-security-compliance npm package installed globally,
+# Requires the mcp-custos npm package installed globally,
 # then `chmod +x .husky/pre-commit`.
 
-mcp-sc-check-citations
+custos-check-citations

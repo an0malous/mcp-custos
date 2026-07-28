@@ -1,5 +1,5 @@
 {
-  "_comment": "Drop into your project's .claude/settings.json. Requires the mcp-security-compliance npm package installed globally (bun add -g mcp-security-compliance or npm i -g).",
+  "_comment": "Drop into your project's .claude/settings.json. Requires the mcp-custos npm package installed globally (bun add -g mcp-custos or npm i -g mcp-custos).",
   "hooks": {
     "PreToolUse": [
       {
@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "mcp-sc-precheck-edit"
+            "command": "custos-precheck-edit"
           }
         ]
       }
