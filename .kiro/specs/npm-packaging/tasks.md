@@ -15,7 +15,7 @@
   - Observable: handshake returns server info from the installed copy; hook prints a nudge; README documents both install paths
   - _Requirements: 1.4, 3.4_
 
-- [ ] 4. Publish (owner-gated)
+- [x] 4. Publish (owner-gated)
   - Verify npm auth; publish only when `npm whoami` succeeds, otherwise stop and request login
   - Observable: package visible on the registry at 0.4.0, or an explicit login request to the owner
   - _Requirements: 3.3_
