@@ -11,7 +11,7 @@ MCP tools over the full MITRE CWE corpus (944 weaknesses with official mitigatio
 A pre-edit nudge (Claude Code hook) surfaces relevant controls and CWE mitigations the moment a security-touching edit starts, and a pre-commit/CI gate blocks commits to security-sensitive code that carry no citation receipt (`// Refs: NIST IA-5(1)` inline or in the commit message). Advisory at edit time, enforced at commit, non-bypassable in CI (`--strict`).
 
 **Prove** — audit evidence out the other end.
-`custos-evidence` walks a repo, collects every citation, resolves NIST → ISO 27001 Annex A through the official NIST OLIR mappings, and emits a `COMPLIANCE.md` evidence index with file:line pointers — the answer to an auditor's "show me A.8.5."
+`custos-evidence` walks a repo, collects every citation, resolves NIST → ISO 27001 Annex A through the official NIST OLIR mappings, and emits a `COMPLIANCE.md` evidence index with file:line pointers.
 
 ## Install
 
