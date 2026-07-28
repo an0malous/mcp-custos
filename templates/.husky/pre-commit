@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 # Wire the compliance-citation check into your project's pre-commit.
-# Requires the mcp-custos npm package installed globally,
+# Written by custos-init (tokens substituted per install mode),
 # then `chmod +x .husky/pre-commit`.
 
-custos-check-citations
+if {{CHECK_GUARD}}; then
+  {{CHECK_RUN}}
+else
+  echo "compliance check skipped: {{CHECK_HINT}}"
+fi
