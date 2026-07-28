@@ -12,20 +12,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check out mcp-security-compliance
-        uses: actions/checkout@v4
-        with:
-          repository: YOUR_ORG/mcp-security-compliance
-          path: .mcp-security-compliance
-
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - run: bun install --cwd .mcp-security-compliance
+      - name: Install mcp-security-compliance
+        run: bun add -g mcp-security-compliance
 
       - name: Verify compliance citations on changed files
         env:
           COMPLIANCE_BASE: origin/${{ github.base_ref }}
-        run: |
-          bun run .mcp-security-compliance/scripts/check-compliance-citations.ts --strict
+        run: mcp-sc-check-citations --strict

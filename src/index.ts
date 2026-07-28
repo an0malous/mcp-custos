@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -50,11 +51,12 @@ import {
   cweMapToControls,
 } from "./tools/cwe.js";
 import { json, text } from "./tools/_shared.js";
+import pkg from "../package.json" with { type: "json" };
 
 const server = new McpServer(
   {
     name: "mcp-security-compliance",
-    version: "0.2.1",
+    version: pkg.version,
   },
   {
     instructions: `Authoritative compliance and secure-development reference data: ISO 27001:2022, NIST SP 800-53 Rev 5, OWASP ASVS 5.0, NIST SSDF (SP 800-218), ISO 27017:2015, NIST cloud guidance (SP 800-144/210/146).

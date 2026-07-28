@@ -1,11 +1,13 @@
 #!/usr/bin/env bun
 /**
- * Drops compliance hook templates into a target project, replacing the
- * MCP_PATH placeholder with the absolute path to this checkout.
+ * Drops compliance hook templates into a target project. Templates invoke
+ * the package's installed bin names (mcp-sc-precheck-edit,
+ * mcp-sc-check-citations), so they work wherever the package is installed —
+ * globally via npm/bun, or from this checkout via `bun link`.
  *
  * Usage:
- *   bun run scripts/init.ts /path/to/target-project
- *   bun run scripts/init.ts /path/to/target-project --skip-hooks=husky,ci
+ *   mcp-sc-init /path/to/target-project [--skip-hooks=husky,ci]
+ *   (from a checkout: bun run scripts/init.ts <target>)
  */
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
@@ -73,10 +75,7 @@ for (const t of templates) {
     continue;
   }
   mkdirSync(dirname(t.dst), { recursive: true });
-  const content = readFileSync(t.src, "utf8").replaceAll(
-    "/MCP_PATH",
-    REPO_ROOT
-  );
+  const content = readFileSync(t.src, "utf8");
   Bun.write(t.dst, content);
   if (t.executable) chmodSync(t.dst, 0o755);
   console.log(`wrote  ${t.dst}`);
@@ -85,11 +84,10 @@ for (const t of templates) {
 
 console.log("");
 console.log(`Done. Copied ${copied} template(s); ${skippedExisting} already existed.`);
-console.log(`MCP_PATH resolved to: ${REPO_ROOT}`);
 console.log("");
 if (copied > 0) {
   console.log("Next steps:");
   console.log("  1. Review the copied files, especially .claude/settings.json");
-  console.log("  2. If using husky, ensure it's installed in your project (npx husky install)");
-  console.log("  3. For CI, edit the workflow to point at your fork of this repo");
+  console.log("  2. Ensure mcp-security-compliance is installed globally (bun add -g mcp-security-compliance)");
+  console.log("  3. If using husky, ensure it's installed in your project (npx husky install)");
 }
