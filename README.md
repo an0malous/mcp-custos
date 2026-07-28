@@ -35,13 +35,24 @@ claude mcp add custos -- mcp-custos
 
 The pre-edit nudge is Claude Code-specific; the tools, commit gate, CI check, and evidence generator work with any agent (or none).
 
-## Wire the hooks (optional)
+## Project setup (optional hooks + server registration)
+
+Two install styles, one command either way:
+
+**Team (recommended)** — add it as a devDependency so teammates get it with plain `pnpm install` and the lockfile keeps everyone on the same version:
+
+```bash
+pnpm add -D mcp-custos                 # or npm i -D / yarn add -D / bun add -d
+pnpm exec custos-init .
+```
+
+**Solo/global** — with the package installed globally:
 
 ```bash
 custos-init /path/to/your/project      # --skip-hooks=husky,ci to skip layers
 ```
 
-Copies three opt-in layers into the target: `.claude/settings.json` (pre-edit nudge), `.husky/pre-commit` (citation gate — requires husky in the project), and a GitHub Actions workflow (the same gate with `--strict`). Humans can `git commit --no-verify` locally; CI is the backstop.
+`custos-init` detects the install mode (override with `--local`/`--global`), registers the `custos` server in the project's `.mcp.json` (matched to your package manager), and copies three opt-in layers: `.claude/settings.json` (pre-edit nudge), `.husky/pre-commit` (citation gate — requires husky in the project), and a GitHub Actions workflow (the same gate with `--strict`). Existing files are never overwritten. Humans can `git commit --no-verify` locally; CI is the backstop.
 
 ## Generate audit evidence
 

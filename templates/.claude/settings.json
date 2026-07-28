@@ -1,5 +1,5 @@
 {
-  "_comment": "Drop into your project's .claude/settings.json. Requires the mcp-custos npm package installed globally (bun add -g mcp-custos or npm i -g mcp-custos).",
+  "_comment": "Drop into your project's .claude/settings.json via custos-init, which fills the hook command per install mode (local devDependency vs global). Manual wiring: set the command to `command -v custos-precheck-edit >/dev/null 2>&1 && custos-precheck-edit || true` (global install).",
   "hooks": {
     "PreToolUse": [
       {
@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "custos-precheck-edit"
+            "command": "{{PRECHECK_CMD}}"
           }
         ]
       }
