@@ -8,7 +8,7 @@
 MCP tools over the full MITRE CWE corpus (944 weaknesses with official mitigations and vulnerable/fixed code examples), NIST 800-53 Rev 5, OWASP ASVS 5.0, NIST SSDF, ISO 27001/27017, and NIST cloud guidance. `controls_for_change` turns *"add password reset"* into the exact controls and mitigations before a line is written; `cwe_lookup` turns any scanner finding into remediation guidance. All text verbatim from the official publications — nothing AI-generated, no network at runtime.
 
 **Enforce** — the guidance has to land in code.
-A pre-edit nudge (Claude Code hook) surfaces relevant controls and CWE mitigations the moment a security-touching edit starts, and a pre-commit/CI gate blocks commits to security-sensitive code that carry no citation receipt (`// Refs: NIST IA-5(1)` inline or in the commit message). Advisory at edit time, enforced at commit, non-bypassable in CI (`--strict`).
+A pre-edit nudge (Claude Code hook) surfaces relevant controls and CWE mitigations — split into design-phase and implementation-phase hints, so the reader picks what fits where they are — the moment a security-touching edit starts, and a pre-commit/CI gate blocks commits to security-sensitive code that carry no citation receipt (`// Refs: NIST IA-5(1)` inline or in the commit message). Advisory at edit time, enforced at commit, non-bypassable in CI (`--strict`).
 
 **Prove** — audit evidence out the other end.
 `custos-evidence` walks a repo, collects every citation, resolves NIST → ISO 27001 Annex A through the official NIST OLIR mappings, and emits a `COMPLIANCE.md` evidence index with file:line pointers.
