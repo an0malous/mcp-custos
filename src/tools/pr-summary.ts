@@ -2,9 +2,13 @@ import { spawnSync } from "node:child_process";
 import { extractCitations } from "../compliance-detect.js";
 import { parseAddedByFile, uniqSorted } from "../diff-utils.js";
 
+// Large PR diffs overflow spawnSync's 1 MB default maxBuffer (ENOBUFS →
+// status=null), which silently turned the summary into "no citations".
+const GIT_MAX_BUFFER = 256 * 1024 * 1024;
+
 function git(cwd: string, ...args: string[]): string {
-  const r = spawnSync("git", args, { cwd, encoding: "utf8" });
-  if (r.status !== 0) return "";
+  const r = spawnSync("git", args, { cwd, encoding: "utf8", maxBuffer: GIT_MAX_BUFFER });
+  if (r.error || r.status !== 0) return "";
   return r.stdout;
 }
 

@@ -30,21 +30,33 @@ const STRICT = process.argv.includes("--strict");
 const BASE = process.env.COMPLIANCE_BASE;
 const cfg = resolveConfig(loadProjectConfig());
 
+// Diff output for a whole PR range can far exceed spawnSync's 1 MB default
+// maxBuffer, which kills the child with ENOBUFS (status=null, empty stderr).
+const GIT_MAX_BUFFER = 256 * 1024 * 1024;
+
 function git(...args: string[]): string {
-  const r = spawnSync("git", args, { encoding: "utf8" });
-  if (r.status !== 0) {
-    process.stderr.write(`git ${args.join(" ")} failed: ${r.stderr}\n`);
+  const r = spawnSync("git", args, { encoding: "utf8", maxBuffer: GIT_MAX_BUFFER });
+  if (r.error || r.status !== 0) {
+    const detail = r.error?.message ?? r.stderr?.trim() ?? `exit ${r.status}`;
+    process.stderr.write(`git ${args.join(" ")} failed: ${detail}\n`);
+    if (!STRICT) {
+      process.stderr.write(
+        "[compliance-check] SKIPPED — citation check did not run (git error above).\n"
+      );
+    }
     process.exit(STRICT ? 1 : 0);
   }
   return r.stdout;
 }
 
+// Deletions contribute no added lines, so they can never need a citation;
+// filtering them out keeps mass-delete diffs from ballooning the output.
 const diffArgs = BASE
-  ? ["diff", "--unified=0", `${BASE}...HEAD`]
-  : ["diff", "--unified=0", "--cached"];
+  ? ["diff", "--unified=0", "--diff-filter=ACMR", `${BASE}...HEAD`]
+  : ["diff", "--unified=0", "--diff-filter=ACMR", "--cached"];
 const nameArgs = BASE
-  ? ["diff", "--name-only", `${BASE}...HEAD`]
-  : ["diff", "--name-only", "--cached"];
+  ? ["diff", "--name-only", "--diff-filter=ACMR", `${BASE}...HEAD`]
+  : ["diff", "--name-only", "--diff-filter=ACMR", "--cached"];
 
 const changedFiles = git(...nameArgs).split("\n").filter(Boolean);
 if (changedFiles.length === 0) process.exit(0);
